@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      
+        <title>Spandan Patel - Portfolio</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+      
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|Playfair+Display:400,400i,500,500i,600,600i,700,700i,900,900i" rel="stylesheet">
+      
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+        <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+
+      
+        <!-- Template Main CSS File -->
+        <link href="assets/css/style.css" rel="stylesheet">
+      </head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <a class="logo" href="index.html">Spandan Patel</a>
+      <!-- Uncomment below if you prefer to use an text logo -->
+      <!-- <h1 class="logo"><a href="index.html">Folio</a></h1> -->
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto" href="index.html">Home</a></li>
+          <li><a class="nav-link scrollto" href="index.html#about">About</a></li>
+          <li><a class="nav-link  scrollto" href="index.html#professional">Professional Projects</a></li>
+          <li><a class="nav-link  scrollto" href="index.html#personal">Personal Projects</a></li>
+          <li><a class="nav-link scrollto" href="index.html#contact">Contact</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Blog Single ======= -->
+    <div class="main-content paddsection">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-md-offset-2">
+            <div class="row">
+              <div class="container-main single-main">
+                <div class="col-md-12">
+                  <div class="block-main mb-30">
+                    <div class="content-main single-post padDiv">
+                      <div class="journal-txt">
+                        <div class="project-video">
+                            <iframe height="600px" width="815px" src="https://www.youtube.com/embed/PNeUzBku4YI?autoplay=1&mute=1">
+                            </iframe>
+                        </div>
+
+                        <h3 style="padding-top: 15px; padding-bottom: 10px;">Troops, Spells and Defense Buildings of COC/CR</h3>
+                        <h4 style="color: #1f1f1f; font-size: 20px; padding-top: 5px;">Game Engine      - Unity Engine, C#</h4>
+                        <h4 style="color: #1f1f1f; font-size: 20px; padding-top: 5px;">Learning Outcome - Create different attack/defense behaviours</h4>
+                      </div>
+
+                      <p><h4 style="color: #1f1f1f; font-size: 20px;">About the Project :</h4></p>
+
+                        <ul>
+                          <li>I implemented different behaviours of Troops, Defense Buildings and Spells of Clash of Clans/ Clash Royale Game.</li>
+                          <li style="padding-top: 5px;">I implemented different types of troops/defenses behaviours, like some troops will attack all buildings, some troops will only attack defnse builings, not all buildings. Some defense buildings will only attack air troops, some will attack just groud troops, etc.</li>
+                          <li style="padding-top: 5px;">There are some troops/defense building that can do area damage as well. And some troops are melee attackers, while some are ranged troops, all of these is implemented in project.</li>
+                          <li style="padding-top: 5px;">For single targeted troops/defense buildings, sorting by distance for first target is also implemented.</li>
+                          <li style="padding-top: 5px;">Spell area indication to place the spell, effects of different spell is also covered in this project.</li>
+                          <li style="padding-top: 5px;">Below are some detailed example of Troops/Defense Buildings from above video.</li>
+                        </ul>
+                      
+                      <p><h4 style="color: #1f1f1f; font-size: 20px;">Inferno Tower :</h4></p>
+
+                        <ul>
+                          <li>Type - Defense Building</li>
+                          <li style="padding-top: 5px;">Attack type - Single target or multiple targets.</li>
+                          <li style="padding-top: 5px;">Single Target - Tower will only damage one troop at time, but it will deal more damage with time.</li>
+                          <li style="padding-top: 5px;">Multiple Target - Tower will deal constant damage to all nearby troops.</li>
+                          <li style="padding-top: 5px;">Video and Code Snippet are below.</li>
+                        </ul>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/InfernoTowerSinle.gif" alt="">
+                        <img class="img-fluid rounded mb-5" src="assets/img/InfernoTowerArea.gif" alt="">
+
+                        <pre class="prettyprint lang-cs">
+    void FixedUpdate()
+    {
+        if(damageType == DamageType.SINGLE)
+            ClearAddSort();
+            
+        //create function for adding troops in list "troops" in real time
+        for (int i = 0; i < troops.Count; i++)
+        {
+            if (troops[i] != null && Vector3.Distance(transform.position, troops[i].transform.position) <= attackRadius)
+            {
+                //Single target
+                if (damageType == DamageType.SINGLE)
+                {
+                    //Instantiate laserbeams and call damage method inside
+                    DamageOverTime(troops[i].gameObject);
+                }
+                
+                //Multiple targets
+                else if (damageType == DamageType.AREA)
+                {
+                    //Instantiate laserbeam
+                    DamageAllTroops(troops[i].gameObject);
+                    
+                    //damage troops
+                    troops[i].GetComponent<TroopsManager>().TakeDamage(damage / 50f);
+                }
+            }
+        }
+    }
+                      
+    void DamageAllTroops(GameObject allTroop)
+    {
+        //generate laserbeams for each troops to attack
+        if (!attackAllTroops.Contains(allTroop))
+        {
+            attackAllTroops.Add(allTroop);
+                              
+            GameObject laser = Instantiate(beam, transform) as GameObject;
+                              
+            //if(!laserBeams.Contains(laser.GetComponent<LineRenderer>()))
+            laserBeams.Add(laser.GetComponent<LineRenderer>());
+                              
+            laser.GetComponent<LaserBeam>().target = allTroop.transform;
+                              
+            //Debug.Log(laserBeams.Count);
+        }
+         
+        //position beams to the center of all troops
+        for(int i = 0; i < attackAllTroops.Count; i++)
+        {
+            if (attackAllTroops[i] != null && laserBeams[i] != null)
+            {
+                laserBeams[i].SetPosition(0, laserHead.position);
+                laserBeams[i].SetPosition(1, attackAllTroops[i].GetComponentInChildren<MeshRenderer>().gameObject.transform.position);
+                              
+                //attackAllTroops[i].GetComponent<TroopsManager>().TakeDamage(damage / 50f);
+                              
+                //yield return null;
+            }            
+                              
+            //if troops died during attack, remove laserbeam and troop from the list
+            else if(attackAllTroops[i] == null && laserBeams[i] != null)
+            {
+                //Debug.Log("Kill");
+                laserBeams[i].GetComponent<LaserBeam>().hasTarget = false;
+                laserBeams.Remove(laserBeams[i]);
+                              
+                attackAllTroops.Remove(attackAllTroops[i]);
+                //Debug.Log(attackAllTroops.Count);
+            }
+        }
+                      
+        //if (attackAllTroops.Count == 1)
+        //    Destroy(GetComponentInChildren<LineRenderer>().gameObject);
+    }
+                      
+    //setting first troop for single targeted Inferno
+    void DamageOverTime(GameObject troopInside)
+    {
+        //float simpleDamage = 0f;
+        //float time = 0f;        
+                      
+        if(!firstTroopInside.Contains(troopInside))
+            firstTroopInside.Add(troopInside);
+                      
+        //Debug.Log(firstTroopInside.Count);
+                      
+        //firstTroopInside.Sort()
+                      
+        if (firstTroopInside[0] != null && firstTroopInside[0] == troopInside)
+        {
+            if (!transform.GetComponentInChildren<LineRenderer>())
+            {
+                GameObject laser = Instantiate(beam, transform) as GameObject;
+                      
+                //LineRenderer laserBeam = laser.GetComponent<LineRenderer>();
+                // laserBeam.SetPosition(0, laserHead.position);
+                //laserBeam.SetPosition(1, t.GetComponentInChildren<MeshRenderer>().gameObject.transform.position);
+            }
+                      
+            LineRenderer laserBeam = GetComponentInChildren<LineRenderer>();
+            //firstTroop = true;
+            StartCoroutine(ApplyDamage(firstTroopInside[0], laserBeam));
+            //Debug.Log("After Starting coroutine");
+        }
+                      
+        else if(firstTroopInside[0] == null)
+        {
+            LineRenderer laserBeam = GetComponentInChildren<LineRenderer>();
+            //Debug.Log(laserBeam.name);
+            StopFirstAttack(laserBeam);
+            clearTroop = true;
+            ClearAddSort();
+            //Debug.Log(troops.Count);
+        }
+                          
+    }
+         
+    //damage first troop for single targeted Inferno
+    IEnumerator ApplyDamage(GameObject t, LineRenderer laser)
+    {
+        float simpleDamage = 0f;
+        
+        if (t != null)
+        {
+                      
+            laser.GetComponent<LaserBeam>().target = t.transform;
+            laser.SetPosition(0, laserHead.position);
+            laser.SetPosition(1, t.GetComponentInChildren<MeshRenderer>().gameObject.transform.position);
+                      
+            //Debug.Log(troopsInsideSingleTarget[0].name);
+            time += Time.fixedDeltaTime;
+            simpleDamage = 0;
+                      
+            if (time % 60 < 1.5f)
+            {
+                simpleDamage = damage;
+                laser.startWidth = 0.2f;
+                laser.endWidth = 0.2f;
+                t.GetComponent<TroopsManager>().TakeDamage(simpleDamage / 50f);
+            }
+                      
+            else if (time % 60 > 1.5f && time % 60 < 5.25f)
+            {
+                simpleDamage = damage * 3f;
+                laser.startWidth = 0.4f;
+                laser.endWidth = 0.4f; 
+                t.GetComponent<TroopsManager>().TakeDamage(simpleDamage / 50f);
+            }
+                      
+            else
+            {
+                simpleDamage = damage * 30f;
+                laser.startWidth = 0.6f;
+                laser.endWidth = 0.6f;
+                t.GetComponent<TroopsManager>().TakeDamage(simpleDamage / 50f);
+            }
+        }
+                      
+        //newTroop = true;
+                      
+        //Destroy(transform.GetComponentInChildren<LineRenderer>().gameObject);
+        //firstTroopInside.Remove(t);
+                      
+        yield break;    
+    }
+                      
+    void StopFirstAttack(LineRenderer laserToDestroy)
+    {
+        //Debug.Log("Hi");
+        time = 0;
+        //Debug.Log(transform.GetComponentInChildren<LineRenderer>());
+        laserToDestroy.GetComponent<LaserBeam>().hasTarget = false;
+        //firstTroopInside.Remove(t);
+    }
+                 
+    //clear the list when troop die
+    void ClearAddSort()
+    {
+        //troops.Clear();
+                      
+        foreach (TroopsManager t in FindObjectsOfType<TroopsManager>())
+        { 
+            if(!troops.Contains(t))
+                troops.Add(t);
+        }
+    
+        if (clearTroop)
+        {
+            firstTroopInside.Clear();
+                      
+            if (firstTroopInside != null)
+            {
+                firstTroopInside.Sort(SortByDistance);
+                //state = State.CHASE;
+            }
+                      
+            clearTroop = false;
+        }        
+    }
+         
+    //sort all troops by distance from tower
+    int SortByDistance(GameObject a, GameObject b)
+    {
+        float squaredRangeA, squaredRangeB;
+        //float squaredRangeB = (b.position - transform.position).sqrMagnitude;
+                      
+        //if (a != null)
+        {
+            squaredRangeA = (a.transform.position - transform.position).sqrMagnitude;
+            squaredRangeB = (b.transform.position - transform.position).sqrMagnitude;
+        }
+        // else
+        // squaredRangeA = 0f;
+                      
+        return squaredRangeA.CompareTo(squaredRangeB);
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Baby Dragon :</h4></p>
+
+                        <ul>
+                          <li>Type - Troop</li>
+                          <li style="padding-top: 5px;">Attack type - Area Damage, all buildings</li>
+                          <li style="padding-top: 5px;">Enraged - Enraged when it is the only air troop in certain radius and deals dobble damage.</li>
+                          <li style="padding-top: 5px;">No rage - Deals normal damage when other air troops are inside of certain radius.</li>
+                          <li style="padding-top: 5px;">Video and Code Snippet are below.</li>
+                        </ul>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/BabyDragon.gif" alt="">
+
+                        <pre class="prettyprint lang-cs">
+    void FixedUpdate()
+    {
+        //check air troop inside certain radius
+        CheckForAirTroops();
+                      
+        for (int i = 0; i < allBuildings.Count; i++)
+        {
+            if (allBuildings[i] != null)
+            {
+                //some buildings covers more tiles if they are big in size
+                //so setting distance to the edge of the building for troops to go 
+                Renderer renderer = allBuildings[i].GetChild(0).GetComponent<Renderer>();
+                float centerToEdgeDistance = renderer.bounds.size.x;
+                      
+                //go to the buildings
+                if (state == State.CHASE && !(((transform.position - allBuildings[i].position).sqrMagnitude) - centerToEdgeDistance <= attackRadius))
+                    StartCoroutine(GoToTheBuilding(allBuildings[i]));
+                  
+                //damage building when in attack radius
+                else if (state == State.CHASE && ((transform.position - allBuildings[i].position).sqrMagnitude) - centerToEdgeDistance <= attackRadius)
+                {
+                    StopCoroutine(GoToTheBuilding(allBuildings[i]));
+                    state = State.ATTACK;
+                
+                    //Debug.Log(state);
+                    transform.position = transform.position;
+                    transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
+                    StartCoroutine(DamageBuilding(allBuildings[i].gameObject));
+                }
+            }
+        }
+    }
+    
+    void CheckForAirTroops()
+    {
+        List<TroopsManager> troops = new List<TroopsManager>();
+                      
+        foreach(TroopsManager t in FindObjectsOfType<TroopsManager>())
+        {
+            //add air troops to list
+            if (!troops.Contains(t) && t.troopType != TroopType.AIR)
+            {
+                troops.Add(t);
+            }
+        }
+           
+        //remove self
+        troops.Remove(this);
+          
+        //if no troops, then raged
+        if(troops.Count == 0)
+        {
+            aloneInRadius = true;
+            rageText.text = "RAGED";
+            transform.GetComponentInChildren<MeshRenderer>().material = babyMaterials[1];
+        }
+              
+        //if more troops on arena
+        else if(troops.Count >= 1)
+        {
+            //Debug.Log("More troops");
+            foreach(TroopsManager t in troops)
+            {
+                Vector3 troopPos = t.transform.position;
+                Vector3 babyPos = transform.position;
+                      
+                //if troop inside certain radius, NO RAGE
+                //Debug.Log(t.transform.name + ((troopPos - babyPos).sqrMagnitude));
+                if ((troopPos - babyPos).sqrMagnitude <= 250f && t != null)
+                {
+                    aloneInRadius = false;
+                    rageText.text = "NO RAGE";
+                    transform.GetComponentInChildren<MeshRenderer>().material = babyMaterials[0];
+                }
+                     
+                //if no troops inside certain radius, RAGE
+                else if ((troopPos - babyPos).sqrMagnitude > 250f && t != null)
+                {
+                    aloneInRadius = true;
+                    rageText.text = "RAGED";
+                    transform.GetComponentInChildren<MeshRenderer>().material = babyMaterials[1];
+                }
+            }
+        }
+    }
+    
+    IEnumerator GoToTheBuilding(Transform building)
+    {
+        resetSpeed = 0.02f;
+                      
+        if (!remainingBuildings.Contains(building))
+            remainingBuildings.Add(building);
+                      
+        //Debug.Log(remainingBuildings.Count);
+                      
+        while (state == State.CHASE && building != null)
+        {
+            transform.LookAt(remainingBuildings[0]);
+                      
+            //transform.position = Vector3.MoveTowards(transform.position, remainingBuildings[0].position, moveSpeed * Time.fixedDeltaTime / 50f);
+                      
+            //transform.position = Vector3.Lerp(transform.position, remainingBuildings[0].position, moveSpeed / 50f);
+                      
+            transform.position += transform.forward * moveSpeed * resetSpeed / 50f;
+                      
+            yield return null;
+        }
+                      
+        //if (remainingBuildings[0] == null)
+        //    yield break;
+                      
+        //if(remainingBuildings[0] == null)
+        remainingBuildings.Remove(building);
+                      
+        yield break;
+    }
+                      
+    IEnumerator DamageBuilding(GameObject building)
+    {
+        while (building != null && state == State.ATTACK)
+        {
+            //Vector3 spawnPos = spawnPoint.transform.forward;
+            GameObject fireProjectile = Instantiate(projectile, transform) as GameObject;
+            fireProjectile.transform.position = spawnPoint.transform.position;
+                      
+            //fireProjectile.transform.position = spawnPos;
+                      
+            //pass the damage inside SHOOT script and when projectile reach destination apply damage
+            fireProjectile.GetComponent<Shoot>().target = building.transform;
+            fireProjectile.GetComponent<Shoot>().projectileSpeed = projectileSpeed;
+                      
+            if(aloneInRadius)
+                fireProjectile.GetComponent<Shoot>().damage = damage * 2f;
+                      
+            else
+                fireProjectile.GetComponent<Shoot>().damage = damage;
+            
+            fireProjectile.GetComponent<Shoot>().isBuilding = true;
+            //building.GetComponent<BuildingsManager>().TakeDamage(damage);
+                      
+            for (int i = 1; i < allBuildings.Count; i++)
+            {
+                if (allBuildings[i] != null && (building.transform.position - allBuildings[i].transform.position).sqrMagnitude <= 0.3f)
+                {
+                    allBuildings[i].GetComponent<BuildingsManager>().TakeDamage(damage);
+                }
+            }
+                      
+            //foreach(BuildingsManager b in allBuildings)
+            //{
+            //    if((building.transform.position - b.transform.position).sqrMagnitude <= 0.3f)
+            //    {
+            //        b.GetComponent<>
+            //    }
+            //}
+                      
+            yield return new WaitForSeconds(attackSpeed);
+        }
+                      
+        if (building == null && allBuildings.Count > 1)
+        {
+            state = State.CHASE;
+            resetSpeed = 0f;
+                      
+            ClearAddSort();
+                      
+            yield break;
+            //allBuildings.Sort(SortByDistance);
+            //Debug.Log(state);
+            //Debug.Log(allBuildings[0].name);
+        }
+    }
+                      
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Lumberjack :</h4></p>
+
+                        <ul>
+                          <li>Type - Troop</li>
+                          <li style="padding-top: 5px;">Attack type - Single Damage, all buildings</li>
+                          <li style="padding-top: 5px;">Extra - Lumberjack will drop Rage Spell when die.</li>
+                          <li style="padding-top: 5px;">Video and Code Snippet are below.</li>
+                        </ul>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/LumberJack.gif" alt="">
+
+                        <pre class="prettyprint lang-cs">
+    //ohter code as any troops, just below method is overridden
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+
+        if(damage >= health && !alreadyDamageDealt)
+        {
+            alreadyDamageDealt = true;
+                     
+            Vector3 spellPos = new Vector3(transform.position.x, 0.01f, transform.position.z);
+            GameObject rage = Instantiate(rageSpell, spellPos, Quaternion.identity) as GameObject;
+        }
+    }
+                      
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Golem :</h4></p>
+
+                        <ul>
+                          <li>Type - Troop</li>
+                          <li style="padding-top: 5px;">Attack type - Single Damage, only defense buildings</li>
+                          <li style="padding-top: 5px;">Extra - When Golem die and explode, it will take area damage and spawn 2 Golemites.</li>
+                          <li style="padding-top: 5px;">Video and Code Snippet are below.</li>
+                        </ul>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/Golem.gif" alt="">
+
+                        <pre class="prettyprint lang-cs">
+    //ohter code as any troops, just below method is overridden
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+        //Debug.Log(damage);
+        
+        if(damage >= health && !alreadySpawned)
+        {
+            alreadySpawned = true;
+
+            GameObject golemite1 = Instantiate(golemite, golemiteSpawnPoint[0].position, Quaternion.identity) as GameObject;
+            GameObject golemite2 = Instantiate(golemite, golemiteSpawnPoint[1].position, Quaternion.identity) as GameObject;            
+
+            foreach (BuildingsManager bm in FindObjectsOfType<BuildingsManager>())
+            {
+                Renderer renderer = bm.transform.GetChild(0).GetComponent<Renderer>();
+                float centerToEdgeDistance = renderer.bounds.size.x;
+
+                if ((bm.transform.position - transform.position).sqrMagnitude - centerToEdgeDistance <= 1.5f)
+                {
+                    bm.TakeDamage(deathDamage);
+                    //Debug.Log(deathDamage);
+                }
+            }
+        }
+    }
+                      
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Heal Spell :</h4></p>
+
+                        <ul>
+                          <li>Type - Spell</li>
+                          <li style="padding-top: 5px;">Discription - This spell will heal the troops inside spell radius.</li>
+                          <li style="padding-top: 5px;">Extra - This spell will not constantly heal all troops inside the radius, but it will heal troops at pulses, just like it work in the game.</li>
+                          <li style="padding-top: 5px;">Video and Code Snippet are below.</li>
+                        </ul>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/HealSpell.gif" alt="">
+
+                        <pre class="prettyprint lang-cs">
+    //start coroutine when heal spell dropped
+    void Start()
+    {
+        StartCoroutine(StartHealEffect());
+    }
+                      
+    IEnumerator StartHealEffect()
+    {
+        //only heals at pusles, not every frame
+        while(currentPulse <= numberOfPulses)
+        {
+            HealEffect();
+                                  
+            currentPulse++;
+            //Debug.Log(currentPulse);
+            //Debug.Log(time);
+                   
+            yield return new WaitForSeconds(timeBTWPulses);
+        }
+                      
+        Destroy(gameObject);
+    }
+                      
+    void HealEffect()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, spellRadius);
+                      
+        //List<TroopsManager> troops = new List<TroopsManager>();
+                      
+        foreach(Collider insideCollider in colliders)
+        {
+            TroopsManager troops = insideCollider.GetComponent<TroopsManager>();
+                      
+            if( troops != null)
+            {
+                troops.Heal(healAmount);
+            }          
+        }
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Rage Spell :</h4></p>
+
+                        <ul>
+                          <li>Type - Spell</li>
+                          <li style="padding-top: 5px;">Discription - Increase attack speed and movement speed of troops.</li>
+                          <li style="padding-top: 5px;">Video and Code Snippet are below.</li>
+                        </ul>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/RageSpell.gif" alt="">
+
+                        <pre class="prettyprint lang-cs">
+    //start coroutine when rage spell dropped
+    void Start()
+    {
+        foreach (TroopsManager t in FindObjectsOfType<TroopsManager>())
+        {
+            allTroops.Add(t);
+        }
+
+        StartCoroutine(StartRageEffect());
+    }
+
+    IEnumerator StartRageEffect()
+    {
+        while (currentPulse <= numberOfPulses)
+        {
+            RageEffect();
+
+            
+            //foreach (TroopsManager troops in allTroops)
+            //{
+            //    if(troops != null && (transform.position - troops.transform.position).sqrMagnitude > spellRadius)
+            //    { 
+            //        //Debug.Log("Dance");
+            //        troops.RemoveRageEffect();
+            //    }   
+            //    
+            //
+            //}
+                //RemoveRage();
+            currentPulse++;
+            //Debug.Log(currentPulse);
+            //Debug.Log(time);
+
+            yield return new WaitForSeconds(timeBTWPulses);
+        }
+        //Debug.Log("Rage over");
+        foreach (TroopsManager troops in allTroops)
+        {
+            if (troops != null)
+            {
+                troops.RemoveRageEffect();
+            }                
+        }
+
+        Destroy(gameObject);
+    }
+
+    void RageEffect()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, spellRadius);
+
+        //List<TroopsManager> troops = new List<TroopsManager>();
+
+        foreach (Collider insideCollider in colliders)
+        {
+            TroopsManager troops = insideCollider.GetComponent<TroopsManager>();
+
+            if (troops != null)
+            {
+                //ragedTroops.Add(troops);
+                //troops.inSideAnotherRage = true;
+                troops.Rage(damageIncrease, speedIncrease, this.gameObject);
+            }
+
+            //else if(troops != null && (transform.position - troops.transform.position).sqrMagnitude > spellRadius)
+            //{
+            //    Debug.Log("moved");
+            //    troops.RemoveRageEffect();
+            //}
+        }
+
+        //foreach(TroopsManager troops in allTroops)
+        //{
+        //    if (troops != null && (transform.position - troops.transform.position).sqrMagnitude > spellRadius)
+        //    {
+        //        //Debug.Log("moved");
+        //        troops.RemoveRageEffect();
+        //    }
+        //}
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Github Repo for all troops,defense buildings and spells from Video :</h4></p>
+
+                        <ul>
+                          <li><b>Troops - </b><a href="https://github.com/Th3M3sS1/ClashOfClansClone/tree/master/Assets/Scripts/Troops" target="_blank">https://github.com/Th3M3sS1/ClashOfClansClone/tree/master/Assets/Scripts/Troops</a></li>
+                          <li style="padding-top: 5px;"><b>Defenses - </b><a href="https://github.com/Th3M3sS1/ClashOfClansClone/tree/master/Assets/Scripts/Defenses" target="_blank">https://github.com/Th3M3sS1/ClashOfClansClone/tree/master/Assets/Scripts/Defenses</a></li>
+                          <li style="padding-top: 5px;"><b>Spells - </b><a href="https://github.com/Th3M3sS1/ClashOfClansClone/tree/master/Assets/Scripts/Spells" target="_blank">https://github.com/Th3M3sS1/ClashOfClansClone/tree/master/Assets/Scripts/Spells</a></li>
+                        </ul>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Blog Single -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <!-- ======= Footer ======= -->
+  <div id="footer" class="text-center">
+    <div class="container">
+      <p>&copy;All rights reserved by Spandan Patel.</p>
+    </div>
+  </div><!-- End Footer --><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/typed.js/typed.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>  
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

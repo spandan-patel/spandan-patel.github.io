@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      
+        <title>Spandan Patel - Portfolio</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+      
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|Playfair+Display:400,400i,500,500i,600,600i,700,700i,900,900i" rel="stylesheet">
+      
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+        <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+
+      
+        <!-- Template Main CSS File -->
+        <link href="assets/css/style.css" rel="stylesheet">
+      </head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <a class="logo" href="index.html">Spandan Patel</a>
+      <!-- Uncomment below if you prefer to use an text logo -->
+      <!-- <h1 class="logo"><a href="index.html">Folio</a></h1> -->
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto" href="index.html">Home</a></li>
+          <li><a class="nav-link scrollto" href="index.html#about">About</a></li>
+          <li><a class="nav-link  scrollto" href="index.html#professional">Professional Projects</a></li>
+          <li><a class="nav-link  scrollto" href="index.html#personal">Personal Projects</a></li>
+          <li><a class="nav-link scrollto" href="index.html#contact">Contact</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Blog Single ======= -->
+    <div class="main-content paddsection">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-md-offset-2">
+            <div class="row">
+              <div class="container-main single-main">
+                <div class="col-md-12">
+                  <div class="block-main mb-30">
+                    <div class="content-main single-post padDiv">
+                      <div class="journal-txt">
+                        <div class="project-video">
+                            <iframe height="600px" width="815px" src="https://www.youtube.com/embed/18e_827r2fM?autoplay=1&mute=1">
+                            </iframe>
+                        </div>
+
+                        <h3 style="padding-top: 15px; padding-bottom: 10px;">Time Reversal Ability</h3>
+                        <h4 style="color: #1f1f1f; font-size: 20px; padding-top: 5px;">Game Engine      - Unity Engine, C#</h4>
+                        <h4 style="color: #1f1f1f; font-size: 20px; padding-top: 5px;">Learning Outcome - 2 types of Time Walk ability</h4>
+                      </div>
+
+                      <p><h4 style="color: #1f1f1f; font-size: 20px;">About the Project :</h4></p>
+
+                        <ul>
+                          <li>I implemented 2 different types of Time Reversal Ability in this project.</li>
+                          <li style="padding-top: 5px;">Below are some detailed example of both ability from above video.</li>
+                        </ul>                    
+                        
+                      
+                      <p><h4 style="color: #1f1f1f; font-size: 20px;">Version 1 :</h4></p>
+
+                        <ul>
+                          <li>Storage of Time - Unlimited Seconds</li>
+                          <li style="padding-top: 5px;">Reversal Time Rate - Normal Speed</li>
+                          <li style="padding-top: 5px;">Control Over Ability - Can travel back Till toggle turned off or First position reached</li>
+                          <li style="padding-top: 5px;">Video and Code Snippet are below.</li>
+                        </ul>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/Mode13.gif" alt="">
+
+                        <pre class="prettyprint lang-cs">
+    private void Update()
+    {
+        // Adding time when the update starts
+        currentDataTimer += Time.deltaTime;
+        totalTimeBeforeAbility += Time.deltaTime;
+
+        // Checking if the player is not currently time walking
+        if (canCollectTimeWalkData)
+        {
+            if (currentDataTimer >= secondsBTWData)
+            {
+                // Getting data
+                timeWalkData.Add(GetTimeWalkData());
+
+                currentDataTimer = 0f;
+            }
+        }
+
+        // Drawing gizmos of the data we stored earlier
+        for (int i = 0; i < timeWalkData.Count - 1; i++)
+        {
+            Debug.DrawLine(timeWalkData[i].objectPosition, timeWalkData[i + 1].objectPosition);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            // Stop collecting data when ability is performed
+            canCollectTimeWalkData = false;
+
+            StartCoroutine(Cast());                
+
+            // Stopping the rotation of player and camera
+            if (isPlayer)
+                cameraController.Lock(true);
+        }
+
+        else if (Input.GetKeyUp(KeyCode.E))
+        {
+            StopCoroutine(Cast());
+            timeWalkData.Clear();                
+            totalTimeBeforeAbility = 0f;
+
+            if (isPlayer)
+                cameraController.Lock(false);
+
+            canCollectTimeWalkData = true;
+        }
+    }
+
+    // Getting data
+    public TimeWalkData GetTimeWalkData()
+    {
+        //for player, to store camera info as well
+        if (isPlayer)
+        {
+            return new TimeWalkData
+            {
+                objectPosition = transform.position,
+                objectRotation = transform.rotation,
+                cameraPosition = cameraController.transform.position,
+                cameraRotation = cameraController.transform.rotation
+            };
+        }
+        //for platform, only to store position and rotation of platform
+        else
+        {
+            return new TimeWalkData
+            {
+                objectPosition = transform.position,
+                objectRotation = transform.rotation,
+            };
+        }
+    }
+
+    // Overriding the cast method from Ability
+    public override IEnumerator Cast()
+    {
+        // Stop collecting data when ability is performed
+        //canCollectTimeWalkData = false;
+
+        // Setting fields for calculation
+        float secondsForEachData = totalTimeBeforeAbility / timeWalkData.Count;
+        Vector3 currentDataStartPosition = transform.position;
+        Quaternion currentDataStartRotation = transform.rotation;
+        Vector3 currentDataCameraPosotion = Vector3.zero;
+        Quaternion currentDataCameraRotation = Quaternion.identity;
+
+        //if player, set camera position and rotation too
+        //if platform, return
+        if (isPlayer)
+        {
+            currentDataCameraPosotion = cameraController.transform.position;
+            currentDataCameraRotation = cameraController.transform.rotation;
+        }
+
+        // Only perform time walk if there are any data in list
+        while (timeWalkData.Count > 0)
+        {
+            // Set the ability time to zero
+            float abilityTime = 0;
+
+            // Performing the ability untill next list's data
+            while (abilityTime < secondsForEachData && !canCollectTimeWalkData)
+            {
+                transform.position = Vector3.Lerp(currentDataStartPosition, timeWalkData[timeWalkData.Count - 1].objectPosition, abilityTime / secondsForEachData);
+
+                transform.rotation = Quaternion.Slerp(currentDataStartRotation, timeWalkData[timeWalkData.Count - 1].objectRotation, abilityTime / secondsForEachData);
+
+                if (isPlayer)
+                {
+                    //cameraController.transform.position = Vector3.Lerp(currentDataCameraPosotion, timeWalkData[timeWalkData.Count - 1].cameraPosition, abilityTime / secondsForEachData);
+                    cameraController.transform.rotation = Quaternion.Slerp(currentDataCameraRotation, timeWalkData[timeWalkData.Count - 1].cameraRotation, abilityTime / secondsForEachData);
+                }
+
+                abilityTime += Time.deltaTime;
+
+                yield return null;
+            }
+
+            // Adding next list's data to current data
+            if (!canCollectTimeWalkData)
+            {
+                currentDataStartPosition = timeWalkData[timeWalkData.Count - 1].objectPosition;
+                currentDataStartRotation = timeWalkData[timeWalkData.Count - 1].objectRotation;
+
+                if (isPlayer)
+                {
+                    currentDataCameraPosotion = timeWalkData[timeWalkData.Count - 1].cameraPosition;
+                    currentDataCameraRotation = timeWalkData[timeWalkData.Count - 1].cameraRotation;
+                }
+            }
+            //positionCam = timeWalkData[0].cameraPosition;
+
+            // Remove performed data
+            if (!canCollectTimeWalkData)
+                timeWalkData.RemoveAt(timeWalkData.Count - 1);
+        }
+
+        //if (isPlayer)
+        //    cameraController.Lock(false);
+        //
+        //canCollectTimeWalkData = true;
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Version 2 :</h4></p>
+
+                        <ul>
+                          <li>Storage of Time - Limited Seconds</li>
+                          <li style="padding-top: 5px;">Reversal Time Rate - Fast-Paced Reversal</li>
+                          <li style="padding-top: 5px;">Control Over Ability - Can't Stop the Reversal in between until First position reached.</li>
+                          <li style="padding-top: 5px;">Video and Code Snippet are below.</li>
+                        </ul>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/Mode23.gif" alt="">
+
+                        <pre class="prettyprint lang-cs">
+    private void Update()
+    {
+        // Adding time when the update starts
+        currentDataTimer += Time.deltaTime;
+    
+        // Checking if the player is not currently time walking
+        if (canCollectTimeWalkData)
+        {
+            if (currentDataTimer >= secondsBTWData)
+            {
+                if (timeWalkData.Count >= maxTimeWalkData)
+                {
+                    // Romove data from the start of the list
+                    timeWalkData.RemoveAt(0);
+                }
+    
+                // Getting data
+                timeWalkData.Add(GetTimeWalkData());
+                currentDataTimer = 0f;
+            }
+        }
+    
+        // Drawing gizmos of the data we stored earlier
+        for (int i = 0; i < timeWalkData.Count - 1; i++)
+        {
+            Debug.DrawLine(timeWalkData[i].objectPosition, timeWalkData[i + 1].objectPosition);
+        }
+    
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            StartCoroutine(Cast());
+            // Stopping the rotation of player and camera
+            if(isPlayer)
+                cameraController.Lock(true);
+        }
+    }
+    
+    // Getting data
+    public TimeWalkData GetTimeWalkData()
+    {
+        //for player, to store camera info as well
+        if (isPlayer)
+        {
+            return new TimeWalkData
+            {
+                objectPosition = transform.position,
+                objectRotation = transform.rotation,
+                cameraPosition = cameraController.transform.position,
+                cameraRotation = cameraController.transform.rotation
+            };
+        }
+        //for platform, only to store position and rotation of platform
+        else
+        {
+            return new TimeWalkData
+            {
+                objectPosition = transform.position,
+                objectRotation = transform.rotation,
+            };
+        }            
+    }
+    
+    // Overriding the cast method from Ability
+    public override IEnumerator Cast()
+    {
+        // Stop collecting data when ability is performed
+        canCollectTimeWalkData = false;
+    
+        // Setting fields for calculation
+        float secondsForEachData = timeWalkDuration / timeWalkData.Count;
+        Vector3 currentDataStartPosition = transform.position;
+        Quaternion currentDataStartRotation = transform.rotation;
+        Vector3 currentDataCameraPosotion = Vector3.zero;
+        Quaternion currentDataCameraRotation = Quaternion.identity;
+        
+        //if player, set camera position and rotation too
+        //if platform, return
+        if (isPlayer)
+        {
+            currentDataCameraPosotion = cameraController.transform.position;
+            currentDataCameraRotation = cameraController.transform.rotation;
+        }
+            
+        // Only perform time walk if there are any data in list
+        while (timeWalkData.Count > 0)
+        {
+            // Set the ability time to zero
+            float abilityTime = 0;
+            // Performing the ability untill next list's data
+            while (abilityTime < secondsForEachData)
+            {
+                transform.position = Vector3.Lerp(currentDataStartPosition, timeWalkData[timeWalkData.Count - 1].objectPosition, abilityTime / secondsForEachData);
+                transform.rotation = Quaternion.Slerp(currentDataStartRotation, timeWalkData[timeWalkData.Count - 1].objectRotation, abilityTime / secondsForEachData);
+        
+                if (isPlayer)
+                {
+                    //cameraController.transform.position = Vector3.Lerp(currentDataCameraPosotion, timeWalkData[timeWalkData.Count - 1].cameraPosition, abilityTime / secondsForEachData);
+                    cameraController.transform.rotation = Quaternion.Slerp(currentDataCameraRotation, timeWalkData[timeWalkData.Count - 1].cameraRotation, abilityTime / secondsForEachData);
+                }                    
+                abilityTime += Time.deltaTime;
+                yield return null;
+            }
+        
+            // Adding next list's data to current data
+            currentDataStartPosition = timeWalkData[timeWalkData.Count - 1].objectPosition;
+            currentDataStartRotation = timeWalkData[timeWalkData.Count - 1].objectRotation;
+        
+            if (isPlayer)
+            {
+                currentDataCameraPosotion = timeWalkData[timeWalkData.Count - 1].cameraPosition;
+                currentDataCameraRotation = timeWalkData[timeWalkData.Count - 1].cameraRotation;
+            }
+                
+            //positionCam = timeWalkData[0].cameraPosition;
+            // Remove performed data
+            timeWalkData.RemoveAt(timeWalkData.Count - 1);                
+        }
+        
+        if(isPlayer)
+            cameraController.Lock(false);
+        
+        canCollectTimeWalkData = true;
+    }
+                        </pre>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Blog Single -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <!-- ======= Footer ======= -->
+  <div id="footer" class="text-center">
+    <div class="container">
+      <p>&copy;All rights reserved by Spandan Patel.</p>
+    </div>
+  </div><!-- End Footer --><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/typed.js/typed.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>  
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

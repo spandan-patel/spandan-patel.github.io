@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      
+        <title>Spandan Patel - Portfolio</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+      
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|Playfair+Display:400,400i,500,500i,600,600i,700,700i,900,900i" rel="stylesheet">
+      
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+        <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+
+      
+        <!-- Template Main CSS File -->
+        <link href="assets/css/style.css" rel="stylesheet">
+      </head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <a class="logo" href="index.html">Spandan Patel</a>
+      <!-- Uncomment below if you prefer to use an text logo -->
+      <!-- <h1 class="logo"><a href="index.html">Folio</a></h1> -->
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto" href="index.html">Home</a></li>
+          <li><a class="nav-link scrollto" href="index.html#about">About</a></li>
+          <li><a class="nav-link  scrollto" href="index.html#professional">Professional Projects</a></li>
+          <li><a class="nav-link  scrollto" href="index.html#personal">Personal Projects</a></li>
+          <li><a class="nav-link scrollto" href="index.html#contact">Contact</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Blog Single ======= -->
+    <div class="main-content paddsection">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-md-offset-2">
+            <div class="row">
+              <div class="container-main single-main">
+                <div class="col-md-12">
+                  <div class="block-main mb-30">
+                    <div class="content-main single-post padDiv">
+                      <div class="journal-txt">
+                        <div class="project-video">
+                            <iframe height="600px" width="815px" src="https://www.youtube.com/embed/Jm2Kc6VOPps?autoplay=1&mute=1">
+                            </iframe>
+                        </div>
+
+                        <h3 style="padding-top: 15px; padding-bottom: 10px;">Abilities of some Dota 2 Heroes</h3>
+                        <h4 style="color: #1f1f1f; font-size: 20px; padding-top: 5px;">Game Engine      - Unity Engine, C#</h4>
+                        <h4 style="color: #1f1f1f; font-size: 20px; padding-top: 5px;">Learning Outcome - Ability System, Buff/Debuff System</h4>
+                      </div>
+
+                      <p><h4 style="color: #1f1f1f; font-size: 20px;">About the Project :</h4></p>
+
+                        <ul>
+                          <li>I tried to implement Ability system of Heros, Buffs and Debuffs and CoolDown system of Dota 2 Game.</li>
+                          <li style="padding-top: 5px;">I implemented different types of abilites, like targeted abilities, non targeted abilities, and passive abilites.</li>
+                          <li style="padding-top: 5px;">The project also have player that uses click-to-move system and emenies that follows player and attack them when in attack range. All of these implemented using UnityNavMesh. Player and enemies also have attack system which will take Physical Damage, while damage done by Abilities act as Magical Damage.</li>
+                          <li style="padding-top: 5px;">But purpose of this project to recreate abilities of Dota 2 heroes.</li>
+                          <li style="padding-top: 5px;">Below are some detailed example of abilities from above video.</li>
+                        </ul>
+                      
+                      <p><h4 style="color: #1f1f1f; font-size: 20px;">Bristleback 3rd Ability :</h4></p>
+
+                        <ul>
+                          <li>Ability Type - Passive</li>
+                          <li style="padding-top: 5px;">Discription - This ability helps BristleBack to take less damage whenever he takes damage from rear or side.</li>
+                          <li style="padding-top: 5px;">White lines are for dubug purpose to see if damage is taken from back or not, and damage taken from side starts with red line and end at white line.</li>
+                          <li style="padding-top: 5px;">Extra - If Bristleback take more than certain amount of damage from the back, he release Quill Spray.</li>
+                          <li style="padding-top: 5px;">Video and Code Snippet are below.</li>
+                        </ul>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/BBSkill3.gif" alt="">
+
+                        <pre class="prettyprint lang-cs">
+    public void TakeHit(float damage, Vector3 attackerDirection, string damageType, float spellAmpli)
+    {
+        float hitDirection = (180 + attackerDirection.y) - transform.localEulerAngles.y;
+        float reducedDamage;
+
+        //Side Damage - 8% Damage Reduction
+        if ((hitDirection > 70 && hitDirection < 110) || (hitDirection > -110 && hitDirection < -70))
+        {
+            if (damageType == "physical")
+            {
+                reducedDamage = damage * (1 - (8f / 100));
+                //Debug.Log("Side Damage" + " " + reducedDamage);
+                GetComponent<LivingEntityManager>().TakePhysicalDamage(reducedDamage);
+            }
+
+            else if (damageType == "magical")
+            {
+                reducedDamage = damage * (1 - (8f / 100));
+                //Debug.Log("Side Damage" + " " + reducedDamage);
+                GetComponent<LivingEntityManager>().TakeMagicalDamage(reducedDamage, spellAmpli);
+            }
+
+            else if(damageType == "pure")
+            {
+                GetComponent<LivingEntityManager>().TakePureDamage(damage);
+            }
+        }
+
+        //Back Damage - 16% Damage Reduction, and Higher Damage will trigger 2nd ability
+        else if ((hitDirection > 110 && hitDirection < 250) || (hitDirection > -250 && hitDirection < -110))
+        { 
+            if (damage > 20)
+            {
+                GetComponent<QuillSprayAbility>().SprayQuill(false);
+            }
+
+            if (damageType == "physical")
+            {
+                reducedDamage = damage * (1 - (16f / 100));
+                //Debug.Log("Rear Damage" + " " + reducedDamage);
+                GetComponent<LivingEntityManager>().TakePhysicalDamage(reducedDamage);
+            }
+
+            else if (damageType == "magical")
+            {
+                reducedDamage = damage * (1 - (16f / 100));
+                //Debug.Log("Rear Damage" + " " + reducedDamage);
+                GetComponent<LivingEntityManager>().TakeMagicalDamage(reducedDamage, spellAmpli);
+            }
+
+            else if (damageType == "pure")
+            {
+                GetComponent<LivingEntityManager>().TakePureDamage(damage);
+            }
+        }
+        else
+        {
+            if (damageType == "physical")
+            {
+                //reducedDamage = damage * (1 - (8 / 100));
+                //Debug.Log("Front Damage");
+                GetComponent<LivingEntityManager>().TakePhysicalDamage(damage);
+            }
+
+            else if (damageType == "magical")
+            {
+                //reducedDamage = damage * (1 - (8 / 100));
+                //Debug.Log("Front Damage");
+                GetComponent<LivingEntityManager>().TakeMagicalDamage(damage, spellAmpli);
+            }
+
+            else if (damageType == "pure")
+            {
+                GetComponent<LivingEntityManager>().TakePureDamage(damage);
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        float positiveSideAngle = (70f + transform.localEulerAngles.y) * Mathf.Deg2Rad;
+        float positiveRearAngle = (110f + transform.localEulerAngles.y) * Mathf.Deg2Rad;
+        //float distance = 1f;
+
+        Vector3 myPos = new Vector3(transform.position.x, 0f, transform.position.z);
+        Vector3 finalPositiveSidePos = new Vector3(5 * Mathf.Sin(positiveSideAngle), 0f, 5 * Mathf.Cos(positiveSideAngle));
+        Vector3 posSideDirection = (myPos + finalPositiveSidePos);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(myPos, posSideDirection);
+
+        Vector3 finalPositiveRearPos = new Vector3(5 * Mathf.Sin(positiveRearAngle), 0f, 5 * Mathf.Cos(positiveRearAngle));
+        Vector3 posRearDirection = (myPos + finalPositiveRearPos);
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(myPos, posRearDirection);
+
+        float negetiveSideAngle = (-70f + transform.localEulerAngles.y) * Mathf.Deg2Rad;
+        float negetiveRearAngle = (-110f + transform.localEulerAngles.y) * Mathf.Deg2Rad;
+        //float distance = 1f;
+
+        //Vector3 myPos = new Vector3(transform.position.x, 1f, transform.position.z);
+        Vector3 finalNegetiveSidePos = new Vector3(5 * Mathf.Sin(negetiveSideAngle), 0f, 5 * Mathf.Cos(negetiveSideAngle));
+        Vector3 negSideDirection = (myPos + finalNegetiveSidePos);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(myPos, negSideDirection);
+
+        Vector3 finalNegetiveRearPos = new Vector3(5 * Mathf.Sin(negetiveRearAngle), 0f, 5 * Mathf.Cos(negetiveRearAngle));
+        Vector3 negRearDirection = (myPos + finalNegetiveRearPos);
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(myPos, negRearDirection);
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">BristleBack 1st Ability :</h4></p>
+
+                        <ul>
+                          <li>Ability Type - Target Unit</li>
+                          <li style="padding-top: 5px;">Discription - This ability add debuff to the target which reduce the armor and movement speed of target enemies. Multiple cast on same target stack up and refresh the duration of debuff.</li>
+                          <li style="padding-top: 5px;">Extra - This ability can stack upto maximum 4 times. The first debuff has more impact and after that stacked debuff affects the target less.</li>
+                          <li style="padding-top: 5px;">Video and Code Snippet are below.</li>
+                        </ul>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/BBSkill1.gif" alt="">
+
+                        <pre class="prettyprint lang-cs">
+    public class GooDebuff : MonoBehaviour
+    {
+        public int currentStack = 0;
+        int maxStack = 4;
+                          
+        float duration = 5f;
+                          
+        float baseArmorReduction = 2f;
+        float armorReductionPerStack = 1.4f;
+                          
+        float baseMoveSpeedSlow = 20f;
+        float moveSpeedSlowPerStatck = 3f;
+                          
+        bool isDuffApplied = false;
+                          
+        float startTime;
+                          
+        // Start is called before the first frame update
+        void Start()
+        {
+            //buffDebuffPanle = FindObjectOfType<BUffDebuffPanel>();
+            StartCoroutine(ApplyDebuff());        
+        }
+                          
+        IEnumerator ApplyDebuff()
+        {
+            startTime = 0f;
+                          
+            while (startTime <= duration)
+            {
+                startTime += Time.deltaTime;
+                          
+                if (!isDuffApplied)
+                {
+                    //startTime = 0;
+                    isDuffApplied = true;
+                          
+                    //      GameObject debuffImage = Instantiate(gooDebuffImage, buffDebuffPanle.transform) as GameObject;
+                    GetComponent<LivingEntityManager>().ChangeArmor(-baseArmorReduction);
+                    GetComponent<LivingEntityManager>().ChangeMoveSpeed(-baseMoveSpeedSlow);
+                }
+                          
+                //buffDebuffPanle.transform.Find("GooDebuffImage").GetComponent<Image>().fillAmount = startTime / duration;
+                          
+                yield return null;
+            }
+                          
+            //remove debuff
+            isDuffApplied = false;
+            GetComponent<LivingEntityManager>().ChangeArmor(baseArmorReduction + currentStack * armorReductionPerStack);
+                          
+            //float defaultMoveSpeed = (baseMoveSpeedSlow + 3 * currentStack) / (100 - (baseArmorReduction + 3 * currentStack));
+            //GetComponent<LivingEntityManager>().ChangeMoveSpeed(Mathf.Ceil(defaultMoveSpeed * 100));
+                          
+            if (currentStack == 0)
+                GetComponent<LivingEntityManager>().ChangeMoveSpeed((baseMoveSpeedSlow / (100 - baseMoveSpeedSlow)) * 100);
+                          
+            else if(currentStack > 0)
+            {
+                for (int i = 1; i <= currentStack; i++)
+                {
+                    GetComponent<LivingEntityManager>().ChangeMoveSpeed((moveSpeedSlowPerStatck / (100 - moveSpeedSlowPerStatck)) * 100);
+                }
+                GetComponent<LivingEntityManager>().ChangeMoveSpeed((baseMoveSpeedSlow / (100 - baseMoveSpeedSlow)) * 100);
+            }
+            Destroy(this);        
+        }
+                          
+        public void StackDebuff()
+        {
+            currentStack++;
+                         
+            if (isDuffApplied && currentStack <= maxStack)
+            {
+                startTime = 0;
+                GetComponent<LivingEntityManager>().ChangeArmor(-armorReductionPerStack);
+                GetComponent<LivingEntityManager>().ChangeMoveSpeed(-moveSpeedSlowPerStatck);
+            }
+                          
+            else if (currentStack > maxStack)
+                currentStack = maxStack;
+        }
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">BristleBack 4th Ability :</h4></p>
+
+                        <ul>
+                          <li>Ability Type - Passive</li>
+                          <li style="padding-top: 5px;">Discription - This ability add Buff on BristleBack whenever he cast any ability and this buff increase the movement speed and damage of this hero.</li>
+                          <li style="padding-top: 5px;">Extra - This buff can stack upto maximum 5 times. Each stack has its own duration and does not reset the buff duration of previous stack.</li>
+                          <li style="padding-top: 5px;">Video and Code Snippet are below.</li>
+                        </ul>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/BBSkill4.gif" alt="">
+
+                        <pre class="prettyprint lang-cs">
+    //Called from another ability class, when ability is casted
+    if (gameObject.GetComponent<PlayerController>().lastAbility.Count < 5)
+    {
+        gameObject.AddComponent<BristleFuryBuff>();
+    }
+                
+    //BristleFuryBuff class
+    public class BristleFuryBuff : MonoBehaviour
+    {
+        float bonusDamagePerStack = 22f;
+        float bonusMoveSpeedPerStack = 3f;
+
+        float duration = 14f;
+
+        float startTime;
+
+        bool isDuffApplied = false;
+    
+        // Start is called before the first frame update
+        void Start()
+        {
+            gameObject.GetComponent<PlayerController>().lastAbility.Add(this);
+            StartCoroutine(ApplyBuff());
+        }
+
+        IEnumerator ApplyBuff()
+        {
+            startTime = 0f;
+
+            while (startTime <= duration)
+            {
+                startTime += Time.deltaTime;
+
+                if (!isDuffApplied)
+                {
+                    //startTime = 0;
+                    isDuffApplied = true;
+                    GetComponent<LivingEntityManager>().ChangeAttackDamage(bonusDamagePerStack);
+                    GetComponent<LivingEntityManager>().ChangeMoveSpeed(bonusMoveSpeedPerStack);
+                }
+                yield return null;
+            }
+        
+            isDuffApplied = false;
+
+            GetComponent<LivingEntityManager>().ChangeAttackDamage(-bonusDamagePerStack);
+            GetComponent<LivingEntityManager>().ChangeMoveSpeed((-bonusMoveSpeedPerStack) / (100 + bonusMoveSpeedPerStack) * 100f);
+
+            gameObject.GetComponent<PlayerController>().lastAbility.Remove(this);
+            Destroy(this);
+        }
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Line 3rd Ability :</h4></p>
+
+                        <ul>
+                          <li>Ability Type - Passive</li>
+                          <li style="padding-top: 5px;">Discription - This ability add Buff on Lina whenever she cast any ability and this buff increase the movement speed and attack speed of this hero.</li>
+                          <li style="padding-top: 5px;">Extra - This buff stacks upto maximum 3 times, and each time Lina casts any Spell, the whole duration of Buff resets.</li>
+                          <li style="padding-top: 5px;">Video and Code Snippet are below.</li>
+                        </ul>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/LinaSkill3.gif" alt="">
+
+                        <pre class="prettyprint lang-cs">
+    //Called from another ability class, when ability is casted
+    if (!gameObject.GetComponent<FierceSoulPassive>())
+        gameObject.AddComponent<FierceSoulPassive>();
+
+    else
+        gameObject.GetComponent<FierceSoulPassive>().StackBuff();
+                
+    //FierceSoulPassive class
+    public class FierceSoulPassive : MonoBehaviour
+    {
+        public int currentStack = 1;
+        int maxStack = 3;
+
+        float duration = 10f;
+
+        float bonusAttackSpeed = 40f;
+        float bonusMoveSpeed = 5f;
+
+        bool isBuffApplied = false;
+
+        float startTime;
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            StartCoroutine(ApplyBuff());
+        }
+
+        IEnumerator ApplyBuff()
+        {
+            startTime = 0f;
+
+            while (startTime <= duration * currentStack)
+            {
+                startTime += Time.deltaTime;
+
+                if (!isBuffApplied)
+                {
+                    //startTime = 0;
+                    isBuffApplied = true;
+                    GetComponent<LivingEntityManager>().ChangeAttackSpeed(bonusAttackSpeed);
+                    GetComponent<LivingEntityManager>().ChangeMoveSpeed(bonusMoveSpeed);
+                }
+
+                yield return null;
+            }
+
+            isBuffApplied = false;
+            GetComponent<LivingEntityManager>().ChangeAttackSpeed(-bonusAttackSpeed * currentStack);
+
+            if (currentStack > 0)
+            {
+                for (int i = 1; i <= currentStack; i++)
+                {
+                    GetComponent<LivingEntityManager>().ChangeMoveSpeed((-bonusMoveSpeed / (100 + bonusMoveSpeed)) * 100);
+                }
+            }
+
+            Destroy(this);
+        }
+
+        public void StackBuff()
+        {
+            currentStack++;
+
+            if (currentStack <= maxStack)
+            {
+                startTime = 0;
+                GetComponent<LivingEntityManager>().ChangeAttackSpeed(bonusAttackSpeed);
+                GetComponent<LivingEntityManager>().ChangeMoveSpeed(bonusMoveSpeed);
+            }
+
+            else if (currentStack > maxStack)
+            {
+                startTime = 0;
+                currentStack = maxStack;
+            }
+        }
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Github Repo for all abilities from Video :</h4></p>
+
+                        <ul>
+                          <li><b>Bristleback - </b><a href="https://github.com/Th3M3sS1/Dota2Clone/tree/master/Assets/Scripts/BristleBack" target="_blank">https://github.com/Th3M3sS1/Dota2Clone/tree/master/Assets/Scripts/BristleBack</a></li>
+                          <li style="padding-top: 5px;"><b>Lina - </b><a href="https://github.com/Th3M3sS1/Dota2Clone/tree/master/Assets/Scripts/Lina" target="_blank">https://github.com/Th3M3sS1/Dota2Clone/tree/master/Assets/Scripts/Lina</a></li>
+                          <li style="padding-top: 5px;"><b>Sven - </b><a href="https://github.com/Th3M3sS1/Dota2Clone/tree/master/Assets/Scripts/Sven" target="_blank">https://github.com/Th3M3sS1/Dota2Clone/tree/master/Assets/Scripts/Sven</a></li>
+                          <li style="padding-top: 5px;"><b>Axe - </b><a href="https://github.com/Th3M3sS1/Dota2Clone/tree/master/Assets/Scripts/Axe" target="_blank">https://github.com/Th3M3sS1/Dota2Clone/tree/master/Assets/Scripts/Axe</a></li>
+                        </ul>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Blog Single -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <!-- ======= Footer ======= -->
+  <div id="footer" class="text-center">
+    <div class="container">
+      <p>&copy;All rights reserved by Spandan Patel.</p>
+    </div>
+  </div><!-- End Footer --><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/typed.js/typed.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>  
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

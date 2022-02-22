@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      
+        <title>Spandan Patel - Portfolio</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+      
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|Playfair+Display:400,400i,500,500i,600,600i,700,700i,900,900i" rel="stylesheet">
+      
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+        <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+
+      
+        <!-- Template Main CSS File -->
+        <link href="assets/css/style.css" rel="stylesheet">
+      </head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <a class="logo" href="index.html">Spandan Patel</a>
+      <!-- Uncomment below if you prefer to use an text logo -->
+      <!-- <h1 class="logo"><a href="index.html">Folio</a></h1> -->
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto" href="index.html">Home</a></li>
+          <li><a class="nav-link scrollto" href="index.html#about">About</a></li>
+          <li><a class="nav-link  scrollto" href="index.html#professional">Professional Projects</a></li>
+          <li><a class="nav-link  scrollto" href="index.html#personal">Personal Projects</a></li>
+          <li><a class="nav-link scrollto" href="index.html#contact">Contact</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Blog Single ======= -->
+    <div class="main-content paddsection">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-md-offset-2">
+            <div class="row">
+              <div class="container-main single-main">
+                <div class="col-md-12">
+                  <div class="block-main mb-30">
+                    <div class="content-main single-post padDiv">
+                      <div class="journal-txt">
+                        <div class="project-video">
+                            <iframe height="600px" width="815px" src="https://www.youtube.com/embed/K6-hfp2SV4Q?autoplay=1&mute=1">
+                            </iframe>
+                        </div>
+
+                        <h3 style="padding-top: 15px; padding-bottom: 10px;">Flocking Behaviour</h3>
+                        <h4 style="color: #1f1f1f; font-size: 20px; padding-top: 5px;">Game Engine      - Unreal Engine, C++</h4>
+                        <h4 style="color: #1f1f1f; font-size: 20px; padding-top: 5px;">Learning Outcome - Flocking Behaviour using differernt approach</h4>
+                      </div>
+
+                      <p><h4 style="color: #1f1f1f; font-size: 20px;">About the Project :</h4></p>
+
+                        <ul>
+                          <li>I implemented Flocking Behaviour using Sphere Cast instead for Line tracing.</li>
+                          <li style="padding-top: 5px;">The result of behaviour will be similar to how flock work using line trace, just avoiding will not work well with other physics objects are placed in world.</li>
+                          <li style="padding-top: 5px;">But I have figured out to assist flocks. <span style="color: red; font-weight: bold;">Red Colored Arrow</span> at <span style="color: red; font-weight: bold;">0:13s</span> indicates the assistants I added for guiding flock to the direction for arrow, to keep them inside the box.</li>
+                          <li style="padding-top: 5px;">Using Sphere Cast will use more memory than line trace, so it will have performace issues if we increase the flock numbers. This approach won't work in real game, but I just wanted to implement flock using different method.</li>
+                          <li style="padding-top: 5px;">Below are some detailed of flocking algorithm from above video.</li>
+                        </ul>                    
+                        
+                      
+                      <p><h4 style="color: #1f1f1f; font-size: 20px;">Flock class : Driver class for all Flock Agents</h4></p>
+
+                        <pre class="prettyprint lang-cpp">
+    void AFlock::Tick(float DeltaTime)
+    {
+        Super::Tick(DeltaTime);
+                          
+        for(AFlockAgent* Agent : AllAgents)
+        {
+            //get all actor around "Agent" actor
+            TArray<FTransform> Context = GetNearByActors(Agent);
+            
+            //calculating cohision,alignment,avoidance based on near by actors
+            FVector Move = BehaviourComponent->CalculateMove(Agent, Context, this);
+                          
+            Move *= DriveFactor;
+                          
+            //limit the speed of agent over maxspeed
+            if (Move.SizeSquared() > SquareMaxSpeed)
+            {
+                Move = Move.GetClampedToSize(0.0f, 1.0f) * MaxSpeed;
+            }
+            
+            FRotator Rotate = BehaviourComponent->CalculateRotate(Agent, Context, this);
+                          
+            Agent->Move(Move, DeltaTime, Rotate);
+        }
+    }
+      
+    //basic sphere overlap to find all actors inside sphere
+    TArray<FTransform> AFlock::GetNearByActors(class AFlockAgent* Agent)
+    {
+        TArray<FTransform> Context;
+                          
+        TArray<AActor*> ContextActors;
+                          
+        TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypesForSphere;
+        ObjectTypesForSphere.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic));
+                          
+        UClass* SeekAgent = AActor::StaticClass();
+                          
+        TArray<AActor*> IgnoreActors;
+        IgnoreActors.Add(Agent);
+                            
+        UKismetSystemLibrary::SphereOverlapActors(GetWorld(), Agent->GetActorLocation(), NeighbourRadius, ObjectTypesForSphere, SeekAgent, IgnoreActors, ContextActors);
+                          
+        for (AActor* CollisionActor : ContextActors)
+        {
+            Context.Add(CollisionActor->GetActorTransform());
+        }
+                          
+        return Context;
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">FlockAgent class : Agent class for Flock mesh and colision</h4></p>
+
+                        <pre class="prettyprint lang-cpp">
+    //move and rotate
+    void AFlockAgent::Move(FVector DesiredPosition, float DeltaTime, FRotator DesiredRotation)
+    {
+        FVector Location = GetActorLocation();
+                          
+        Location += DesiredPosition * DeltaTime;
+                          
+        SetActorLocation(Location);
+                          
+        FVector Forward = DesiredPosition - GetActorLocation();
+        FRotator Rot = UKismetMathLibrary::MakeRotFromXZ(Forward, FVector::UpVector);
+                            
+        SetActorRotation(DesiredRotation);
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">CompositeBehaviour class : Behaviour class for calculating cohision, alignment, avoidance</h4></p>
+
+                        <pre class="prettyprint lang-cpp">
+    FVector UCompositeBehaviour::CalculateMove(class AFlockAgent* Agent, TArray<FTransform> Context, class AFlock* Flock)
+    {
+        FVector Move;
+        FVector PartialCohisionMove;
+        FVector PartialAllignmentMove;
+        FVector PartialAvoidanceMove;
+      
+        //calculating alignment
+        if (AllignmentBool)
+        {
+            PartialAllignmentMove = CalculateAllignmentMove(Agent, Context, Flock) * AllignmentWeight;
+      
+            //clamp the alignment over weight
+            if (PartialAllignmentMove.SizeSquared() > AllignmentWeight * AllignmentWeight && PartialAllignmentMove != FVector(0.0f, 0.0f, 0.0f))
+            {
+                PartialAllignmentMove = PartialAllignmentMove.GetClampedToSize(0.8f, 1.0f) * AllignmentWeight;
+            }
+      
+            //GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("PartialAllignment : (%f , %f, %f)"), PartialAllignmentMove.X, PartialAllignmentMove.Y, PartialAllignmentMove.Z));
+        }
+      
+        //calculating cohision
+        if (CohisionBool)
+        {
+            PartialCohisionMove = CalculateCohisionMove(Agent, Context, Flock) * CohisionWeight;
+      
+            //clamp the cohision over weight
+            if (PartialCohisionMove.SizeSquared() > CohisionWeight * CohisionWeight && PartialCohisionMove != FVector(0.0f, 0.0f, 0.0f))
+            {
+                PartialCohisionMove = PartialCohisionMove.GetClampedToSize(0.8f, 1.0f) * CohisionWeight;
+            }
+      
+            //GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("PartialCohision : (%f , %f, %f)"), PartialCohisionMove.X, PartialCohisionMove.Y, PartialCohisionMove.Z));
+        }
+      
+        //calculating avoidance
+        if (AvoidanceBool)
+        {
+            PartialAvoidanceMove = CalculateAvoidanceMove(Agent, Context, Flock) * AvoidanceWeight;
+      
+            //clamp hte avoidance over weight
+            if (PartialAvoidanceMove.SizeSquared() > AvoidanceWeight * AvoidanceWeight && PartialCohisionMove != FVector(0.0f, 0.0f, 0.0f))
+            {
+                PartialAvoidanceMove = PartialAvoidanceMove.GetClampedToSize(0.8f, 1.0f) * AvoidanceWeight;
+            }
+      
+            //GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("PartialAvoidance : (%f , %f, %f)"), PartialAvoidanceMove.X, PartialAvoidanceMove.Y, PartialAvoidanceMove.Z));
+        }
+      
+        //adding all behaviour movement
+        Move = PartialCohisionMove + PartialAllignmentMove + PartialAvoidanceMove;
+      
+        //GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Orange, FString::Printf(TEXT("Move : (%f , %f, %f)"), Move.X, Move.Y, Move.Z));
+      
+        return Move;
+    }
+      
+    FVector UCompositeBehaviour::CalculateCohisionMove(class AFlockAgent* Agent, TArray<FTransform> Context, class AFlock* Flock)
+    {
+        //if no Neighbour flock around, apply cohision randomly
+        if (Context.Num() == 0)
+            return FVector(FMath::RandRange(0.0f, 1000.0f), FMath::RandRange(0.0f, 1000.0f), FMath::RandRange(0.0f, 1000.0f));
+      
+        FVector CohisionMove = FVector(0.0f, 0.0f, 0.0f);
+      
+        //adding the location of all neighbour flock
+        for (FTransform Item : Context)
+        {
+            CohisionMove += Item.GetLocation();
+        }
+
+        //average
+        CohisionMove /= Context.Num();
+      
+        //remove self location
+        CohisionMove -= Agent->GetActorLocation();
+
+        CohisionMove = FMath::Lerp(Agent->GetActorForwardVector(), CohisionMove, AgentSmoothTime);
+      
+        //GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Cyan, FString::Printf(TEXT("Cohision : (%f , %f, %f)"), CohisionMove.X, CohisionMove.Y, CohisionMove.Z));
+      
+        return CohisionMove;
+    }
+      
+    FVector UCompositeBehaviour::CalculateAllignmentMove(class AFlockAgent* Agent, TArray<FTransform> Context, class AFlock* Flock)
+    {
+        //if no neighbour flock around, apply alignment randomly
+        if (Context.Num() == 0)
+            return FVector(FMath::RandRange(0.0f, 360.0f), FMath::RandRange(0.0f, 360.0f), FMath::RandRange(0.0f, 360.0f));
+      
+        FVector AllignmentMove = FVector(0.0f, 0.0f, 0.0f);
+      
+        //adding the rotation of all neighbour flock
+        for (FTransform Item : Context)
+        {
+            AllignmentMove += Item.GetRotation().GetForwardVector();
+        }
+
+        //average
+        AllignmentMove /= Context.Num();
+      
+        //GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Cyan, FString::Printf(TEXT("Allignment : (%f , %f, %f)"), AllignmentMove.X, AllignmentMove.Y, AllignmentMove.Z));
+      
+        return AllignmentMove;
+    }
+      
+    //similar to alignment, but this will create the rotation
+    FRotator UCompositeBehaviour::CalculateRotate(class AFlockAgent* Agent, TArray<FTransform> Context, class AFlock* Flock)
+    {
+        FVector PartialAllignmentMove;
+      
+        if (AllignmentBool)
+        {
+            PartialAllignmentMove = CalculateAllignmentMove(Agent, Context, Flock) * AllignmentWeight;
+      
+            //clamp the alignment over weight
+            if (PartialAllignmentMove.SizeSquared() > AllignmentWeight * AllignmentWeight && PartialAllignmentMove != FVector(0.0f, 0.0f, 0.0f))
+            {
+                PartialAllignmentMove = PartialAllignmentMove.GetClampedToSize(0.8f, 1.0f) * AllignmentWeight;
+            }
+      
+          //GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, FString::Printf(TEXT("PartialAllignment : (%f , %f, %f)"), PartialAllignmentMove.X, PartialAllignmentMove.Y, PartialAllignmentMove.Z));
+        }
+      
+        FVector Forward = PartialAllignmentMove - Flock->GetActorLocation();
+        FRotator Rot = UKismetMathLibrary::MakeRotFromXZ(Forward, FVector::UpVector);
+      
+        return Rot;
+    }
+      
+    FVector UCompositeBehaviour::CalculateAvoidanceMove(class AFlockAgent* Agent, TArray<FTransform> Context, class AFlock* Flock)
+    {
+        //if no neighbour flock around, apply avoidance randomly
+        if (Context.Num() == 0)
+            return FVector(FMath::RandRange(0.0f, 1000.0f), FMath::RandRange(0.0f, 1000.0f), FMath::RandRange(0.0f, 1000.0f));
+      
+        FVector AvoidanceMove = FVector(0.0f, 0.0f, 0.0f);
+        int AgentsToAvoid = 0;
+      
+        //adding all flock location
+        for (FTransform Item : Context)
+        {
+            if ((Item.GetLocation() - Agent->GetActorLocation()).SizeSquared() < Flock->SquareAvoidanceRadius)
+            {
+                AgentsToAvoid++;
+                AvoidanceMove += (Agent->GetActorLocation() - Item.GetLocation());
+            }
+        }
+      
+        //average
+        if (AgentsToAvoid > 0)
+            AvoidanceMove /= AgentsToAvoid;
+      
+        //GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Cyan, FString::Printf(TEXT("Avoidance : (%f , %f, %f)"), AvoidanceMove.X, AvoidanceMove.Y, AvoidanceMove.Z));
+      
+        return AvoidanceMove;
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Inspired by :</h4></p>
+
+                        <ul>
+                          <li><b>Boids by Sebastian Lague - </b><a href="https://www.youtube.com/watch?v=bqtqltqcQhw" target="_blank">https://www.youtube.com/watch?v=bqtqltqcQhw</a></li>
+                        </ul>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Blog Single -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <!-- ======= Footer ======= -->
+  <div id="footer" class="text-center">
+    <div class="container">
+      <p>&copy;All rights reserved by Spandan Patel.</p>
+    </div>
+  </div><!-- End Footer --><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/typed.js/typed.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>  
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
