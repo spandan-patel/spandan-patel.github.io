@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      
+        <title>Spandan Patel - Portfolio</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+      
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|Playfair+Display:400,400i,500,500i,600,600i,700,700i,900,900i" rel="stylesheet">
+      
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+        <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+
+      
+        <!-- Template Main CSS File -->
+        <link href="assets/css/style.css" rel="stylesheet">
+      </head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <a class="logo" href="index.html">Spandan Patel</a>
+      <!-- Uncomment below if you prefer to use an text logo -->
+      <!-- <h1 class="logo"><a href="index.html">Folio</a></h1> -->
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto" href="index.html">Home</a></li>
+          <li><a class="nav-link scrollto" href="index.html#about">About</a></li>
+          <li><a class="nav-link  scrollto" href="index.html#professional">Professional Projects</a></li>
+          <li><a class="nav-link  scrollto" href="index.html#personal">Personal Projects</a></li>
+          <li><a class="nav-link scrollto" href="index.html#contact">Contact</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Blog Single ======= -->
+    <div class="main-content paddsection">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-md-offset-2">
+            <div class="row">
+              <div class="container-main single-main">
+                <div class="col-md-12">
+                  <div class="block-main mb-30">
+                    <div class="content-main single-post padDiv">
+                      <div class="journal-txt">
+                        <div class="project-video">
+                            <iframe height="600px" width="815px" src="https://www.youtube.com/embed/s60ZzKNeoVY?autoplay=1&mute=1">
+                            </iframe>
+                        </div>
+
+                        <h3 style="padding-top: 15px; padding-bottom: 10px;">Mario Galaxy's Gravity and Launch Star Mechanics</h3>
+                        <h4 style="color: #1f1f1f; font-size: 20px; padding-top: 5px;">Game Engine      - Unreal Engine, C++</h4>
+                        <h4 style="color: #1f1f1f; font-size: 20px; padding-top: 5px;">Learning Outcome - Creating Spherical Gravity and Understanding Spline Component</h4>
+                      </div>
+
+                      <p><h4 style="color: #1f1f1f; font-size: 20px;">About the Project :</h4></p>
+
+                        <ul>
+                          <li>I implemented spherical gravity by adding Physical velocity to Player at each frames.</li>
+                          <li style="padding-top: 5px;">I also created Launch Star system simialr to Original game using Unreal Engine's built-in Spline Component.</li>
+                          <li style="padding-top: 5px;">Unreal Engine's 3rd Person Example Project's default animations were not working because of Spherical Gravity System I have added to Characer. Therefore, I had to change animation blueprints that can work well with character animation and my gravity system.</li>
+                          <li style="padding-top: 5px;">Future Update - Enemies and Camera like Original Game</li>
+                          <li style="padding-top: 5px;">Code Snippets are below.</li>
+                        </ul>                    
+                        
+                      
+                      <p><h4 style="color: #1f1f1f; font-size: 20px;">PlayerPawn Class :</h4></p>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/mariocharacter.gif" alt="">
+
+                        <pre class="prettyprint lang-cpp">
+    void AMarioGalaxyPawn::Tick(float DeltaTime)
+    {
+        Super::Tick(DeltaTime);
+                     
+        //return if player is not in normal state
+        if (CurrentState != EPlayerState::NORMAL)
+            return;
+                          
+        else
+        {
+            //Rotation from current location to Planet's center
+            FRotator NewRotation = UKismetMathLibrary::FindLookAtRotation(CurrentPlanet->GetActorLocation(), GetActorLocation());
+                          
+            SetActorRotation(UKismetMathLibrary::MakeRotFromZX(UKismetMathLibrary::GetForwardVector(NewRotation), GetActorForwardVector()));
+                    
+            //Applying Physics velocity to Player
+            CharacterCollision->SetPhysicsLinearVelocity(UKismetMathLibrary::GetForwardVector(NewRotation) * GravityForce, true);
+             
+            //Setting Input vector for turning Player mesh and animation
+            InputVector = FVector(ForwardInputValue, RightInputValue, 0.0f);
+                          
+            //if input vector is 0, then return, else rotate player mesh
+            if (InputVector.Size() == 0.0f)
+                return;
+                          
+            FRotator NewInputRotation(0.0f, FollowCamera->GetRelativeRotation().Yaw + (InputVector.Rotation().Yaw - 90.0f), 0.0f);
+                          
+            CharacterMesh->SetRelativeRotation(NewInputRotation);
+                          
+            //Clamp Physical Velocity for running around in same speed for all direction
+            FVector CurrentVelocity = CharacterCollision->GetPhysicsLinearVelocity().GetClampedToSize(MinimumVelocity, MaximumVelocity);
+                          
+            //GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Orange, FString::Printf(TEXT("%f"), CurrentVelocity.Size()));
+                          
+            CharacterCollision->SetPhysicsLinearVelocity(CurrentVelocity);
+        }
+    }
+
+    void AMarioGalaxyPawn::MoveForward(float Value)
+    {
+	      if (CurrentState != EPlayerState::NORMAL)
+		        return;
+	
+        /*FRotator NewRotation(0.0f, FollowCamera->GetRelativeRotation().Yaw + (-90.0f * Value), 0.0f);
+
+	      CharacterMesh->SetRelativeRotation(NewRotation);*/
+	
+        //setting input value for input vector 
+	      ForwardInputValue = Value;
+
+        //adding physical velocity for forward movement
+	      FVector Move = CharacterCollision->GetForwardVector() * Value * Acceleration;
+	      CharacterCollision->SetPhysicsLinearVelocity(Move, true);
+
+	      //CharacterCollision->GetPhysicsLinearVelocity();
+
+	      //GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("%s"), *CharacterCollision->GetPhysicsLinearVelocity().ToString()));
+    }
+
+    void AMarioGalaxyPawn::MoveRight(float Value)
+    {
+	      if (CurrentState != EPlayerState::NORMAL)
+		        return;
+	
+        /*FRotator NewRotation(0.0f, FollowCamera->GetRelativeRotation().Yaw + (180.0f * Value), 0.0f);
+
+	      CharacterMesh->SetRelativeRotation(NewRotation);*/
+	      
+        //setting input value for input vector 
+        RightInputValue = Value;
+
+        //adding physical velocity for right movement
+	      FVector Move = CharacterCollision->GetRightVector() * Value * Acceleration;
+	      CharacterCollision->SetPhysicsLinearVelocity(Move, true);
+    }
+
+    void AMarioGalaxyPawn::Jump()
+    {
+	      if (!CanJump || CurrentState != EPlayerState::NORMAL)
+		        return;
+
+      	MaximumVelocity = 2000.0f;
+
+        //adding physical velocity for jump
+	      FVector Move = CharacterCollision->GetUpVector() * JumpForce * Acceleration;
+	      CharacterCollision->SetPhysicsLinearVelocity(Move, true);
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Launch Star :</h4></p>
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/mariolaunchstar.gif" alt="">
+
+                        <pre class="prettyprint lang-cpp">
+    void ALaunchingStart::Tick(float DeltaTime)
+    {
+        Super::Tick(DeltaTime);
+                
+        //when player touch the start, start moving player along spline 
+        if (PlayerTarget != nullptr && bCanMoveActor)
+        {
+            //calculating time for getting distance of spline from starting point, based on time to complete spline path 
+            float CurrentSplineTime = (GetWorld()->GetTimeSeconds() - StartTime) / TimeToCompletePath;
+            
+            //getting current distance on spline from time
+            float Distance = SplinePath->GetSplineLength() * CurrentSplineTime;
+                         
+            //getting current position on spline from distance
+            FVector Position = SplinePath->GetLocationAtDistanceAlongSpline(Distance, ESplineCoordinateSpace::World);
+                       
+            //getting current direction on spline from distance
+            FVector Direction = SplinePath->GetDirectionAtDistanceAlongSpline(Distance, ESplineCoordinateSpace::Local);
+                         
+            //setting player position on spline
+            PlayerRootPoint->SetWorldLocation(Position);
+                 
+            //setting player forward vector in spline direction
+            FRotator NewRotator = UKismetMathLibrary::MakeRotFromX(Direction);
+            PlayerRootPoint->SetWorldRotation(NewRotator);
+                          
+            //Player about to reach end
+            if (CurrentSplineTime >= 0.90f && PlayerTarget->IsStartedRolling == false)
+                PlayerTarget->IsStartedRolling = true;
+                              
+            //Player reach the end                          
+            if (CurrentSplineTime >= 1.0f)
+            {
+                bCanMoveActor = false;
+                          
+                //dettach Player from scene component of star actor 
+                PlayerTarget->RemoveFromRoot();
+                     
+                //this method will start applying physical velocity to player, for spherical gravity
+                PlayerTarget->EndOfSplineFollow();
+            }
+        }
+                          
+    }
+       
+    //Player touch the star
+    void ALaunchingStart::OnStarBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+    {
+        if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
+        {
+            if (OtherActor != Cast<AMarioGalaxyPawn>(OtherActor))
+                return;
+                          
+            PlayerTarget = Cast<AMarioGalaxyPawn>(OtherActor);
+                          
+            PlayerTarget->AttachPlayerToStar();
+              
+            //attach player to scene component of star actor, this "PlayerRootPoint" component will follow the spline path 
+            FAttachmentTransformRules TransformRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, true);
+                              
+            PlayerTarget->AttachToComponent(PlayerRootPoint, TransformRules);
+                          
+            //GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Orange, FString::Printf(TEXT("Collision Occured")));
+                          
+            //Pull back the player actor
+            //PullBack(); call launch() inside PullBack
+                          
+            LaunchPlayer();
+        }
+    }
+                          
+    void ALaunchingStart::LaunchPlayer()
+    {
+        //get time when player touch the star 
+        StartTime = GetWorld()->GetTimeSeconds();
+
+        //this bool will trigger Tick to move player along spline
+        bCanMoveActor = true;
+    }
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Inspired by :</h4></p>
+
+                        <ul>
+                          <li><b>Mario Galaxy's Launch Star by Mix and Jam - </b><a href="https://www.youtube.com/watch?v=T_3cne2tzYM" target="_blank">https://www.youtube.com/watch?v=T_3cne2tzYM</a></li>
+                        </ul>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Resources :</h4></p>
+
+                        <ul>
+                          <li><b>Jammo Character by Mix and Jam - </b><a href="https://github.com/mixandjam/Jammo-Character" target="_blank">https://github.com/mixandjam/Jammo-Character</a></li>
+                          <li style="padding-top: 5px;"><b>Character Animations - </b><a href="https://www.mixamo.com/" target="_blank">https://www.mixamo.com/</a></li>
+                        </ul>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Blog Single -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <!-- ======= Footer ======= -->
+  <div id="footer" class="text-center">
+    <div class="container">
+      <p>&copy;All rights reserved by Spandan Patel.</p>
+    </div>
+  </div><!-- End Footer --><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/typed.js/typed.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>  
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
