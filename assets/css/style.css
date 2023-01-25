@@ -608,6 +608,11 @@ tr:nth-child(even) {
   bottom: 20px;
 }
 
+pre.prettyprint, code.prettyprint {
+	background-color: #e3e3e3;
+	border-radius: 8px;
+}
+
 /*--------------------------------------------------------------
 # Portfolio Details
 --------------------------------------------------------------*/
@@ -766,9 +771,15 @@ tr:nth-child(even) {
 
 .project-video
 {
-  height: 600px;
-  width: 1000px;
-  align-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+}
+
+iframe
+{
+  height: 603px;
+  width: 1072px;
 }
 
 /* main content */
