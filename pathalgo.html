@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      
+        <title>Path Finding Algorithms</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+      
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|Playfair+Display:400,400i,500,500i,600,600i,700,700i,900,900i" rel="stylesheet">
+      
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+        <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+
+      
+        <!-- Template Main CSS File -->
+        <link href="assets/css/style.css" rel="stylesheet">
+      </head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <a class="logo" href="index.html">Spandan Patel</a>
+      <!-- Uncomment below if you prefer to use an text logo -->
+      <!-- <h1 class="logo"><a href="index.html">Folio</a></h1> -->
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto" href="index.html">Home</a></li>
+          <li><a class="nav-link scrollto" href="index.html#about">About</a></li>
+          <li><a href="assets/resume/Spandan_Resume.pdf" target="_blank">Resume</a></li>
+          <li><a class="nav-link  scrollto" href="index.html#professional">Professional Projects</a></li>
+          <li><a class="nav-link  scrollto" href="index.html#personal">Personal Projects</a></li>
+          <li><a class="nav-link scrollto" href="index.html#contact">Contact</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    
+    <!-- ======= Blog Single ======= -->
+    <div class="main-content paddsection">
+      <div class="container">
+        <h1 style="padding-bottom: 10px; text-align: center;">Path Finding Algorithms - A* vs Dijkstra vs BFS vs DFS</h1>
+        <div class="row justify-content-center">
+          <div class="col-md-12 col-md-offset-2">
+            <div class="row">
+              <div class="container-main single-main">
+                <div class="col-md-12">
+                  <div class="block-main mb-30">
+                    <div class="content-main single-post padDiv">
+                      <div class="journal-txt">
+                        <div class="project-video">
+                            <iframe src="https://www.youtube.com/embed/OV2jyvFxRf0?autoplay=1&mute=1">
+                            </iframe>
+                        </div>
+                          <div style="padding-bottom: 10px;"></div>
+                        <h4 style="color: #1f1f1f; font-size: 20px; padding-top: 5px;">Game Engine      - Unreal Engine, C++</h4>
+                        <h4 style="color: #1f1f1f; font-size: 20px; padding-top: 5px;">Learning Outcome - Implementation of Grids, Pathfinding Algorithms</h4>
+                      </div>
+
+                      <p><h4 style="color: #1f1f1f; font-size: 20px;">About the Project :</h4></p>
+
+                        <ul>
+                          <li>I implemented different pathfinding/searching algorithms for comparing completion time, grid count, and much more of each algorithms.</li>
+                          <li style="padding-top: 5px;">I also implemented visualization flow to understand how each algorithms traverse.</li>
+                          <li style="padding-top: 5px;">Future Update - Random Maze Generator and Web Player Demo with UI interaction so others can visualize all functionality of project.</li>
+                          <li style="padding-top: 5px;">More details about each algorithms and code Snippets are below.</li>
+                        </ul>      
+                        
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">What is pathfinding/searching algorithm?</h4></p>
+
+                        <p style="color: #1f1f1f">We frequently search for routes in video games to get from one place to another. 
+                          In addition to determining the quickest path, we also want to account for travel time. 
+                          To determine the shortest route, a graph search technique can be used to find this path.</p>
+                        
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Comparison Table :</h4></p>
+                        
+                        <table style="width:100%">
+  <tr>
+    <th colspan="2"></th>
+    <th>A*</th>
+    <th>Dijkstra</th>
+    <th>BFS</th>
+    <th>DFS</th>
+  </tr>
+  <tr>
+    <th rowspan="2">Random Map 1</td>
+    <th>Tiles Visisted</td>
+    <td>22</td>
+    <td>143</td>
+    <td>104</td>
+    <td>22</td>
+  </tr>
+  <tr>
+    <th>Tiles of Path</td>
+    <td>8</td>
+    <td>8</td>
+    <td>8</td>
+    <td>21</td>
+  </tr>
+  
+  <tr>
+    <th rowspan="2">Random Map 2</td>
+    <th>Tiles Visisted</td>
+    <td>20</td>
+    <td>90</td>
+    <td>68</td>
+    <td>170</td>
+  </tr>
+  <tr>
+    <th>Tiles of Path</td>
+    <td>6</td>
+    <td>6</td>
+    <td>6</td>
+    <td>169</td>
+  </tr>
+  
+  <tr>
+    <th rowspan="2">Random Map 3</td>
+    <th>Tiles Visisted</td>
+    <td>25</td>
+    <td>126</td>
+    <td>89</td>
+    <td>84</td>
+  </tr>
+  <tr>
+    <th>Tiles of Path</td>
+    <td>7</td>
+    <td>7</td>
+    <td>7</td>
+    <td>83</td>
+  </tr>
+</table>
+
+                      
+<p><h4 style="color: #1f1f1f; font-size: 20px;">Breadth First Search (BFS) :</h4></p>
+                
+<p style="color: #1f1f1f">Breadth First Search traverses in all directions equally. 
+  In addition to regular route finding, this approach is extremely helpful for procedural map construction, flow field pathfinding, and other kinds of map analysis.</p>
+
+  <p style="color: #1f1f1f">
+  Beginning at the root, each level's nodes are traversed one at a time, starting with the root, and continuing until all nodes have been traversed.
+  <br><br>
+
+This is accomplished via a Queue. The current level's unvisited nodes that are immediately surrounding them are all pushed into a queue, and the level's visited nodes are marked and removed from the queue.
+<br><br>
+
+Steps:<br>
+
+  <ol type="1">
+    <li>Queue and Array are initialized and empty.</li>
+    <li>Enqueue(Insert) Starting Node in Queue and marked that Node as visited, also add Starting Node in Array.</li>
+    <li>Now Enqueue all Neighbour Nodes of first added Node of Queue, and mark those Neighbour Nodes as visited. Also, set first added node as Parent Node for all Neighbour Nodes.</li>
+    <li>Dequeue(remove) first added Node od Queue.</li>
+    <li>Repeat Step 3 and 4 until Target is found.</li>
+    <li>If target is found, Nodes inside the Array is the path to Target Node from Start Node. tagr</li>
+  </ol>
+
+</p>
+
+
+                        <img class="img-fluid rounded mb-5" src="assets/img/bfsalgo.gif" alt="">
+
+                        <pre class="prettyprint lang-cpp">
+
+void UBFS::FindPath(FVector StartPos, FVector TargetPos)
+{
+    //startPos is character's position
+    //get starting tile from startPos
+    ATile* StartTile = Grid->GetTileFromWorldPoint(StartPos);
+
+    //targetPos is target's position
+    //get target tile from targetPos
+    ATile* TargetTile = Grid->GetTileFromWorldPoint(TargetPos);
+                        
+    //add StartTile to queue
+    OpenTileSet.Enqueue(StartTile);
+    StartTile->IsVisited = true;
+                        
+    while (!OpenTileSet.IsEmpty())
+    {
+        //creating pointer for current tile
+        ATile* CurrentTile;
+                            
+        //setting last element(first added) from queue as current tile
+        OpenTileSet.Peek(CurrentTile);
+                        
+        //add current tile to visited tile array
+        VisitedTiles.Add(CurrentTile);
+                        
+        //removing current tile from queue
+        OpenTileSet.Dequeue(CurrentTile);
+                        
+        //if current tile is target tile, means target is found
+        if (CurrentTile == TargetTile)
+        {
+            //GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("BFS Target Found")));
+
+            //trace path find path by traversing each parent node starting from target tile to start tile
+            TracePath(StartTile, TargetTile);
+
+            //exit loop as target is found
+            return;
+        }
+                        
+        //if target not found
+        //traverse through each neighbour tiles of current tile
+        for (ATile* NeighbourTile : Grid->GetNeighbourTiles(CurrentTile))
+        {
+            //if neighbour tile is not blocked
+            if (!NeighbourTile->Walkable)
+                continue;
+                     
+            //if neighbour tile not visited    
+            if (!NeighbourTile->IsVisited)
+            {
+                //set current tile as parent tile for neighbour tile
+                NeighbourTile->ParentTile = CurrentTile;
+                        
+                //add neighbour tile in queue
+                OpenTileSet.Enqueue(NeighbourTile);
+                //marked neighbour tile as visited
+                NeighbourTile->IsVisited = true;
+            }
+        }
+    }
+}
+
+  </pre>
+
+  <p><h4 style="color: #1f1f1f; font-size: 20px;">Depth First Search (DFS) :</h4></p> 
+    <p style="color: #1f1f1f">
+      An algorithm for exploring or traversing trees or graphs is called depth-first search. The algorithm begins at the root node (choosing some child node to be the root node in the case of a graph) and proceeds to explore as far as it can along each branch before turning around.
+    <br><br>
+  
+  Unlike BFS algorithm, we can use array (which will work as Stack) to store visited nodes. Before adding each surrounding nodes into stack, we will add first child node into stack, and keep on adding first child node and makring them as visited of each nodes into stack.
+  If node does has any child node, we will remove the top most node from stack. Then, we will pick top most node again and follow same logic until we find target node.
+  <br><br>
+
+  Steps:<br>
+
+  <ol type="1">
+    <li>Stack and Array are initialized and empty.</li>
+    <li>Push Starting Node in Stack and marked that Node as visited, also add Starting Node in Array.</li>
+    <li>Now push first Neighbour Node of the top Node from the Stack, and mark first Neighbour Node as visited. Also, set the top Node of Stack as Parent Node for first Neighbour Node.</li>
+    <li>Repeat Step 3 until there are no Neighbour Nodes found from top Node of the Stack.</li>
+    <li>If no Neighbour Nodes found from Top Node of the Stack, remove the Top Node from Stack using Pop operation.</li>
+    <li>Repeat Step 3 to 5 until Target is Found.</li>
+    <li>If target is found, Nodes inside the Array is the path to Target Node from Start Node.</li>
+  </ol>
+</p>
+
+  <img class="img-fluid rounded mb-5" src="assets/img/dfsalgo.gif" alt="">
+
+  <pre class="prettyprint lang-cpp">
+
+//find path method start
+void UDFS::FindPath(FVector StartPos, FVector TargetPos)
+{
+    //startPos is character's position
+    //get starting tile from startPos
+    ATile* StartTile = Grid->GetTileFromWorldPoint(StartPos);
+
+    //targetPos is target's position
+    //get target tile from targetPos
+    ATile* TargetTile = Grid->GetTileFromWorldPoint(TargetPos);
+
+    //recursive method to check all tiles starting from Start Tile(first param) as current tile
+    RecursiveCheck(StartTile, StartTile, TargetTile);
+}
+//find path method end
+
+//recursive check method start
+void UDFS::RecursiveCheck(ATile* CurrentTile, ATile* StartTile, ATile* TargetTile)
+{
+    //add CurrentTile to stack
+    OpenTileStack.Push(CurrentTile);
+    CurrentTile->IsVisited = true;
+
+    //add current tile to visited tile array
+    VisitedTiles.Add(CurrentTile);
+
+    //if current tile is target tile, means target is found
+    if (CurrentTile == TargetTile)
+    {
+        //DrawDebugSphere(GetWorld(), CurrentTile->WorldPosition, Grid->TileRadius * 1.2f, 5, FColor::Blue, true, -1, 0, 1.0f);
+        //GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("DFS Target Found")));
+
+        //trace path find path by traversing each parent node starting from target tile to start tile
+        TracePath(StartTile, TargetTile);
+
+        //exit loop as target is found
+        return;
+    } 
+
+    //if target not found
+    //traverse through each neighbour tiles of current tile
+    for (ATile* NeighbourTile : Grid->GetNeighbourTiles(CurrentTile))
+    {
+        //if neighbour tile is not blocked
+        if (!NeighbourTile->Walkable)
+            continue;
+            
+        //if neighbour tile not visited
+        if (!NeighbourTile->IsVisited)
+        {
+            //set current tile as parent tile for neighbour tile
+            NeighbourTile->ParentTile = CurrentTile;
+            
+            //marked neighbour tile as visited
+            NeighbourTile->IsVisited = true;
+            
+            //recursive check to find target in all neighbours
+            RecursiveCheck(NeighbourTile, StartTile, TargetTile);
+        }
+    }
+    
+    //remove top tile from stack 
+    OpenTileStack.Pop();
+}
+//recursive check method end
+
+  </pre>
+
+  <p><h4 style="color: #1f1f1f; font-size: 20px;">Special Note for DFS and BFS Algorithms :</h4></p>
+
+                        <p style="color: #1f1f1f">
+                          For traversing though each neighbour tiles in both algorithms, differnt search paths can be obtained based on which order we are traversing though neighbour tiles to Queue(BFS) or Stack(DFS). 
+                          </p>
+
+    <p><h4 style="color: #1f1f1f; font-size: 20px;">Dijkstra (also called Uniform Cost Search):</h4></p>
+
+    <p style="color: #1f1f1f">
+      Up until now, we were just exploring neighbours in BFS/DFS algorithms and checking if we have found target or not. BFS/DFS does not generate shortest path, and if we consider weighted graph, BFS/DFS are useless.
+      However, Dijkstra's algorithm always generate shortest path.
+    <br><br>
+  
+  Unlike BFS/DFS algorithms, We need to keep track of the total movement cost from the start location. We want to take the movement costs into account when deciding how to evaluate neighbours.
+  We can use Array (which will work as Queue) to store tiles that need to be evaluated in Open List, and we can use Set to store tiles that are already evaluated in Close Set.
+  <br><br>
+
+  Below are some moevment cost that we will keep in mind for this algorithm:<br>
+    GCost = Distance from Starting node.<br>
+    HCost = Distance from End node, which is equal to 0, as we won't use HCost(Heuristic Cost) in Dijkstra algorithm.<br>
+    FCost = GCost + HCost = GCost, as HCost is equal to 0.<br><br>
+
+    Steps:<br>
+
+  <ol type="1">
+    <li>Set and Array are initialized and empty.</li>
+    <li>Insert Starting Node in the Array.</li>
+    <li>Go through all Nodes from the Array and get the Node with the lowest FCost value, and also set that node as a Current Node.</li>
+    <li>Remove Node with the lowest FCost from the Array and Insert that Node in Set.</li>
+    <li>Loop thorugh all Neighbour Nodes of Current Node.</li>
+    <li>Calculate cost of travelling from Start Node to all Neighbour Nodes (To calculate cost, add GCost of current node and cost of travelling from Current Node to Neighbour Node). </li>
+    <li>If Array does not has Neighbour Node or calculated cost of Neighbour Node is less than Neighbour Node's GCost, then set Neighbour Node's GCost as calculated cost. In addition, set Current Node as Parent Node for Neighbour Node, and Insert Neighbour Node in the Array.</li>
+    <li>Repeat Step 3 to 7 until Target Node found.</li>
+    <li>If target is found, Nodes inside the Array is the path to Target Node from Start Node. </li>
+  </ol>
+
+  <img class="img-fluid rounded mb-5" src="assets/img/dijkstraalgo.gif" alt="">
+
+  <pre class="prettyprint lang-cpp">
+
+void UDijkstraPathFinding::FindPath(FVector StartPos, FVector TargetPos)
+{
+    //startPos is character's position
+    //get starting tile from startPos
+    ATile* StartTile = Grid->GetTileFromWorldPoint(StartPos);
+
+    //targetPos is target's position
+    //get target tile from targetPos
+    ATile* TargetTile = Grid->GetTileFromWorldPoint(TargetPos);
+
+    //add start tile into open tile array
+    OpenTileSet.Add(StartTile);
+
+    //add start tile in visited array
+    //visisted tile array is just for visualization purpose only
+    VisitedTiles.Add(StartTile);
+    
+    //perfor Dijkstra until open tile array is empty
+    while (OpenTileSet.Num() > 0)
+    {
+        //set first element of open tile array as curernt tile
+        ATile* CurrentTile = OpenTileSet[0];
+
+        //loop thorugh all tiles from open tile array
+        for (int32 index = 1; index < OpenTileSet.Num(); index++)
+        {
+            //if FCost of any tile from array is less than FCost of current tile, set tile with lowest FCost as current tile 
+            if (OpenTileSet[index]->GetFCost() < CurrentTile->GetFCost())
+            {
+                CurrentTile = OpenTileSet[index];
+            }
+        }
+    
+        //remove current tile from open tile array
+        OpenTileSet.Remove(CurrentTile);
+
+        //add current tile in close tile set
+        ClosedTileSet.Add(CurrentTile);
+        //DrawDebugSphere(GetWorld(), CurrentTile->WorldPosition, Grid->TileRadius, 5, FColor::Blue, true, -1, 0, 1.0f);
+    
+        //if current tile is target tile, means target is found
+        if (CurrentTile == TargetTile)
+        {
+            //DrawDebugSphere(GetWorld(), CurrentTile->WorldPosition, Grid->TileRadius * 1.2f, 5, FColor::Blue, true, -1, 0, 1.0f);
+            GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("Dikstra Target Found")));
+
+            //trace path find path by traversing each parent node starting from target tile to start tile
+            TracePath(StartTile, TargetTile);
+
+            //exit loop as target is found
+            return;
+        }
+    
+        //if target not found
+        //traverse through each neighbour tiles of current tile
+        for (ATile* NeighbourTile : Grid->GetNeighbourTiles(CurrentTile))
+        {
+            //if neighbour tile is not walkable
+            //or if neighbour tile is close tile set 
+            if (!NeighbourTile->Walkable || ClosedTileSet.Contains(NeighbourTile))
+                continue;
+    
+            //calculate cost from start tile to neighbour tile
+            //GCost of current tile is equal to distance/cost from start tile to current tile
+            //get distance method will return distance/cost from current tile to neighbour tile
+            int32 NewCostToNeighbour = CurrentTile->GCost + GetDistance(CurrentTile, NeighbourTile);
+    
+            //if calculated cost in last step is less than GCost of neighbour tile
+            //or if open tile does not have neighbour tile
+            if (NewCostToNeighbour < NeighbourTile->GCost || !OpenTileSet.Contains(NeighbourTile))
+            {
+                //set GCost of neighbour tile as calculated cost in last step
+                NeighbourTile->GCost = NewCostToNeighbour;
+                NeighbourTile->HCost = 0; //always 0 for Dijkstra
+    
+                //set current tile as parent tile for neighbour tile
+                NeighbourTile->ParentTile = CurrentTile;
+    
+                //if open tile does not have neighbour tile
+                if (!OpenTileSet.Contains(NeighbourTile))
+                {
+                    //add neighbour tile into open tile array
+                    OpenTileSet.Add(NeighbourTile);
+
+                    //add start tile in visited array
+                    //visisted tile array is just for visualization purpose only
+                    VisitedTiles.Add(NeighbourTile);
+                }
+            }
+        }
+    }
+}
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">A* (also called A-Star):</h4></p>
+
+    <p style="color: #1f1f1f">
+      An optimized version of Dijkstra's Algorithm for a single destination is called A*.
+      All locations can be reached by Dijkstra's Algorithm, while only one place or the nearest of many locations can be reached by A*.
+      It gives priority to routes that appear to go in the direction of a goal.
+    <br><br>
+  
+  A* works same as Dijkstra algorithm, but we only consider movement cost from starting node to current node(or neighbour nodes) in Dijkstra algorithm. However, we will calculate movement cost from neighbour nodes to target node (Heuristic value) in A* start algorithm when we are evaluating paths and their movement cost.
+  Same as Dijkstra algorithm, we can use Array (which will work as Queue) to store tiles that need to be evaluated in Open List, and we can use Set to store tiles that are already evaluated in Close Set.
+  <br><br>
+
+  Below are some moevment cost that we will keep in mind for this algorithm:<br>
+    GCost = Distance from Starting node.<br>
+    HCost = Distance from End node, Heuristic Cost.<br>
+    FCost = GCost + HCost.<br><br>
+
+    Steps:<br>
+
+  <ol type="1">
+    <li>Set and Array are initialized and empty.</li>
+    <li>Insert Starting Node in the Array.</li>
+    <li>Go through all Nodes from the Array and get the Node with the lowest FCost value. If FCost value is same for any nodes, we will use Node with loweset HCost, and also set that node as a Current Node.</li>
+    <li>Remove Node with the lowest FCost from the Array and Insert that Node in Set.</li>
+    <li>Loop thorugh all Neighbour Nodes of Current Node.</li>
+    <li>Calculate cost of travelling from Start Node to all Neighbour Nodes (To calculate cost, add GCost of current node and cost of travelling from Current Node to Neighbour Node). </li>
+    <li>If Array does not has Neighbour Node or calculated cost of Neighbour Node is less than Neighbour Node's GCost, then set Neighbour Node's GCost as calculated cost and set Neighbour Node's HCost as distance between Neighbour Node and Target Node. In addition, set Current Node as Parent Node for Neighbour Node, and Insert Neighbour Node in the Array.</li>
+    <li>Repeat Step 3 to 7 until Target Node found.</li>
+    <li>If target is found, Nodes inside the Array is the path to Target Node from Start Node. </li>
+  </ol>
+
+  <img class="img-fluid rounded mb-5" src="assets/img/astaralgo.gif" alt="">
+
+  <pre class="prettyprint lang-cpp">
+
+void UAStarPathFinding::FindPath(FVector StartPos, FVector TargetPos)
+{
+    //startPos is character's position
+    //get starting tile from startPos
+    ATile* StartTile = Grid->GetTileFromWorldPoint(StartPos);
+
+    //targetPos is target's position
+    //get target tile from targetPos
+    ATile* TargetTile = Grid->GetTileFromWorldPoint(TargetPos);
+
+    //add start tile into open tile array
+    OpenTileSet.Add(StartTile);
+
+    //add start tile in visited array
+    //visisted tile array is just for visualization purpose only
+    VisitedTiles.Add(StartTile);
+    
+    //perfor Dijkstra until open tile array is empty
+    while (OpenTileSet.Num() > 0)
+    {
+        //set first element of open tile array as curernt tile
+        ATile* CurrentTile = OpenTileSet[0];
+
+        //loop thorugh all tiles from open tile array
+        for (int32 index = 1; index < OpenTileSet.Num(); index++)
+        {
+            //if FCost of any tile from array is less than FCost of current tile, set tile with lowest FCost as current tile
+            //if FCost is same for any to tiles with lowest FCost value, get tile with minimum HCost
+            if (OpenTileSet[index]->GetFCost() < CurrentTile->GetFCost() || 
+                (OpenTileSet[index]->GetFCost() == CurrentTile->GetFCost() && OpenTileSet[index]->HCost < CurrentTile->HCost))
+            {
+                CurrentTile = OpenTileSet[index];
+            }
+        }
+    
+        //remove current tile from open tile array
+        OpenTileSet.Remove(CurrentTile);
+
+        //add current tile in close tile set
+        ClosedTileSet.Add(CurrentTile);
+        //DrawDebugSphere(GetWorld(), CurrentTile->WorldPosition, Grid->TileRadius, 5, FColor::Blue, true, -1, 0, 1.0f);
+    
+        //if current tile is target tile, means target is found
+        if (CurrentTile == TargetTile)
+        {
+            //DrawDebugSphere(GetWorld(), CurrentTile->WorldPosition, Grid->TileRadius * 1.2f, 5, FColor::Blue, true, -1, 0, 1.0f);
+            GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("A* Target Found")));
+
+            //trace path find path by traversing each parent node starting from target tile to start tile
+            TracePath(StartTile, TargetTile);
+
+            //exit loop as target is found
+            return;
+        }
+    
+        //if target not found
+        //traverse through each neighbour tiles of current tile
+        for (ATile* NeighbourTile : Grid->GetNeighbourTiles(CurrentTile))
+        {
+            //if neighbour tile is not walkable
+            //or if neighbour tile is close tile set 
+            if (!NeighbourTile->Walkable || ClosedTileSet.Contains(NeighbourTile))
+                continue;
+    
+            //calculate cost from start tile to neighbour tile
+            //GCost of current tile is equal to distance/cost from start tile to current tile
+            //get distance method will return distance/cost from current tile to neighbour tile
+            int32 NewCostToNeighbour = CurrentTile->GCost + GetDistance(CurrentTile, NeighbourTile);
+    
+            //if calculated cost in last step is less than GCost of neighbour tile
+            //or if open tile does not have neighbour tile
+            if (NewCostToNeighbour < NeighbourTile->GCost || !OpenTileSet.Contains(NeighbourTile))
+            {
+                //set GCost of neighbour tile as calculated cost in last step
+                NeighbourTile->GCost = NewCostToNeighbour;
+
+                //set HCost of neighbour tile as distance from neighbour tile to target tile
+                NeighbourTile->HCost = GetDistance(NeighbourTile, TargetTile);
+    
+                //set current tile as parent tile for neighbour tile
+                NeighbourTile->ParentTile = CurrentTile;
+    
+                //if open tile does not have neighbour tile
+                if (!OpenTileSet.Contains(NeighbourTile))
+                {
+                    //add neighbour tile into open tile array
+                    OpenTileSet.Add(NeighbourTile);
+
+                    //add start tile in visited array
+                    //visisted tile array is just for visualization purpose only
+                    VisitedTiles.Add(NeighbourTile);
+                }
+            }
+        }
+    }
+}
+                        </pre>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Special Note :</h4></p>
+
+                        <p style="color: #1f1f1f">
+                          There is one more algorithm that is similar to Dijkstra and A* algorithm. It is called Greedy Best First Search Algorithm.
+                          Dijkstra algorithm uses movement cost from starting node to current node or neighbour node when evaluating paths.
+                          Greedy Best First Search uses movement cost from target node to current node or neighbour node when evaluating paths.
+                          A* uses both movement cost, that's why it works best from all other options.<br><br>
+
+                          Dijkstra's Algorithm works well to find the shortest path, but it wastes time exploring in directions that aren't promising.
+                          Greedy Best First Search explores in promising directions but it may not find the shortest path.
+                          The A* algorithm uses both the actual distance from the start and the estimated distance to the goal.
+                          </p>
+
+                        <p><h4 style="color: #1f1f1f; font-size: 20px;">Resources :</h4></p>
+
+                        <ul>
+                          <li><b>A* Algorithm Article by Amit Patel (Red Blol Games) - </b><a href="https://www.redblobgames.com/pathfinding/a-star/introduction.html" target="_blank">https://www.redblobgames.com/pathfinding/a-star/introduction.html</a></li>
+                          <li><b>BFS Algorithms - </b><a href="https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph/?ref=lbp" target="_blank">https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph/?ref=lbp</a></li>
+                          <li><b>DFS Algorithms - </b><a href="https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/?ref=lbp" target="_blank">https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/?ref=lbp</a></li>
+                        </ul>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Blog Single -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <!-- ======= Footer ======= -->
+  <div id="footer" class="text-center">
+    <div class="container">
+      <p>&copy;All rights reserved by Spandan Patel.</p>
+    </div>
+  </div><!-- End Footer --><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/typed.js/typed.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
